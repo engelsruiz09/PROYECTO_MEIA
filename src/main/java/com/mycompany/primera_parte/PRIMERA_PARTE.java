@@ -13,7 +13,7 @@ public class PRIMERA_PARTE {
 
     public static void main(String[] args) 
  {
-                // Despliega el formulario de ingreso
+        // Despliega el formulario de ingreso
         Login f1 = new Login();
         f1.setVisible(true);
 
@@ -122,6 +122,7 @@ public class PRIMERA_PARTE {
             File archivo6 = new File("C:\\MEIA\\desc_bitacora_usuario.txt");
             if (archivo6.createNewFile()) {
                 // Define la informacion a escribir en el archivo
+                 System.out.println("Archivo creado: " + archivo6.getName());
                 String info = "nombre_simbolico: bitacora_usuario.txt" + System.getProperty("line.separator")
                     + "fecha_creacion:" + System.getProperty("line.separator")
                     + "usuario_creacion:" + System.getProperty("line.separator")
@@ -138,7 +139,7 @@ public class PRIMERA_PARTE {
                 bw.write(info);
                 bw.close();
 
-                System.out.println("Archivo creado: " + archivo6.getName());
+                //System.out.println("Archivo creado: " + archivo6.getName());
             } else {
                 System.out.println("Este archivo ya existe.");
             }

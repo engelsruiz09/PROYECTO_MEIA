@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Funciones;
-import java.time.LocalDateTime;
 import static java.awt.image.ImageObserver.WIDTH;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -155,7 +154,7 @@ public void Add(String key, String ingreso, String pathBit, String pathMaster, S
         String[][] descriptorBit = getDescriptor(pathBitDes);
         String[][] descriptorMast = getDescriptor(pathMasterDesc);
         String fechaMod;
-        if (descriptorBit[1][1].equals(" ") && descriptorBit[2][1].equals(" ")) {
+        if (" ".equals(descriptorBit[1][1]) && " ".equals(descriptorBit[2][1])) {
             //Fecha creción
             fechaMod = dtf.format(LocalDateTime.now()); //fecha mod
             descriptorBit[1][1] = fechaMod;
@@ -194,22 +193,28 @@ public void Add(String key, String ingreso, String pathBit, String pathMaster, S
 //     return Retorna una matriz con la informacion del descriptor del archivo.
 //     
  private String[][] getDescriptor(String ruta) {
-        String[][] fileInfo = new String[9][2];
-        File file = new File(ruta);
-        if (file.exists() == true) {
-            try{
-                FileReader LecturaArchivo = new FileReader(file);
-                BufferedReader LeerArchivo = new BufferedReader(LecturaArchivo);
-                for (int i = 0; i < 9; i++) {
-                    String[] line = LeerArchivo.readLine().split(":");
-                    fileInfo[i][0] = line[0];
-                    fileInfo[i][1] = line[1];
+    String[][] fileInfo = new String[9][2];
+    File file = new File(ruta);
+    if (file.exists() == true) {
+        try {
+            FileReader LecturaArchivo = new FileReader(file);
+            BufferedReader LeerArchivo = new BufferedReader(LecturaArchivo);
+            for (int i = 0; i < 9; i++) {
+                String lineStr = LeerArchivo.readLine();
+                if (lineStr != null) {
+                    String[] line = lineStr.split(":");
+                    fileInfo[i][0] = line.length > 0 ? line[0] : "";
+                    fileInfo[i][1] = line.length > 1 ? line[1] : "";
+                } else {
+                    fileInfo[i][0] = "";
+                    fileInfo[i][1] = "";
                 }
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", WIDTH);
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", WIDTH);
         }
-        return fileInfo;
+    }
+    return fileInfo;
 }
 
     
@@ -244,17 +249,19 @@ public void Add(String key, String ingreso, String pathBit, String pathMaster, S
     private boolean LlenarArchivo(String strPath, String strContenido, String strError) {
         File Archivo = new File(strPath);
 
-        try {
-            FileWriter Escribir = new FileWriter(Archivo, true); 
-            BufferedWriter bw = new BufferedWriter(Escribir);
-
-            //Escribe el contenido en el archivo
-            bw.write(strContenido + System.getProperty("line.separator"));
-            bw.close();
-
-            return true;
-        } catch(IOException ex) {
-            strError = ex.getMessage();
+        try
+        {//FileWriter Escribir = new FileWriter(Archivo,false);
+            try (FileWriter Escribir = new FileWriter(Archivo,true); 
+                 BufferedWriter bw = new BufferedWriter(Escribir)) {
+                bw.write(strContenido+ System.getProperty( "line.separator" ));
+                bw.close();
+            }
+                
+                return true;
+        }
+        catch(IOException ex)
+        {
+            strError= ex.getMessage();
             return false;
         } 
     } 
@@ -365,14 +372,22 @@ public ArrayList<String> getAll(String id, String pathMaster, String pathBit){
             Linea=LeerArchivo.readLine();
 
             //Recorre el archivo de bitacora y busca registros que coincidan con el ID
-            while(Linea != null){
-                if (!"".equals(Linea) && Linea.contains(id) && Linea.endsWith("1")) {
-                    resultado.add(Linea);
+                while(Linea != null){
+                    if (!"".equals(Linea)) {                                                                        
+                        if (Linea.contains(id)) {
+                            if (!Linea.endsWith("1")) {
+                            //Si el registro esta deshabilitado se regresa un null
+                                continue;
+                            }
+                            LecturaArchivo.close();
+                            LeerArchivo.close();
+                            resultado.add(Linea);
+                        }
+                    }
+                    Linea=LeerArchivo.readLine();
                 }
-                Linea=LeerArchivo.readLine();
-            }
-            LecturaArchivo.close();
-            LeerArchivo.close();
+                LecturaArchivo.close();
+                LeerArchivo.close();
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ArchivoSecuencial.class.getName()).log(Level.SEVERE, null, ex);
@@ -392,14 +407,22 @@ public ArrayList<String> getAll(String id, String pathMaster, String pathBit){
             Linea=LeerArchivo.readLine();
 
             //Recorre el archivo maestro y busca registros que coincidan con el ID
-            while(Linea != null){
-                if (!"".equals(Linea) && Linea.contains(id) && Linea.endsWith("1")) {
-                    resultado.add(Linea);
+                while(Linea != null){
+                    if (!"".equals(Linea)) {                                                                        
+                        if (Linea.contains(id)) {
+                            if (!Linea.endsWith("1")) {
+                            //Si el registro esta deshabilitado se regresa continua
+                                continue;
+                            }
+                            LecturaArchivo.close();
+                            LeerArchivo.close();
+                            resultado.add(Linea);
+                        }
+                    }
+                    Linea=LeerArchivo.readLine();
                 }
-                Linea=LeerArchivo.readLine();
-            }
-            LecturaArchivo.close();
-            LeerArchivo.close();
+                LecturaArchivo.close();
+                LeerArchivo.close();
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ArchivoSecuencial.class.getName()).log(Level.SEVERE, null, ex);

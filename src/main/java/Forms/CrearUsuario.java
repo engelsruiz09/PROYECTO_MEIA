@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
-import java.util.logging.Level;
 /**
  *
  * @author JULIORUIZ
@@ -735,16 +734,15 @@ public class CrearUsuario extends javax.swing.JFrame {
 //  return Retorna un array de bytes con el contenido del archivo.
 // 
 public byte[] openFile(File file_){
-    byte[] image_ = new byte[1024*100];
-    try(FileInputStream input = new FileInputStream(file_))
-    {
-        input.read(image_);
-    } 
-    catch(IOException e)
-    {
-        return null;
-    }
-    return image_;
+       byte[] image_ = new byte[1024*100];
+        try{
+            input = new FileInputStream(file);
+            input.read(image_);
+        }
+        catch(IOException e){
+            return null;
+        }
+        return image_;
 }   
  
 ///
@@ -754,15 +752,16 @@ public byte[] openFile(File file_){
 //Retorna un mensaje indicando si el archivo se guardo correctamente.
 // 
 public String saveFile(File file_, byte[] image_){
-    try(FileOutputStream output = new FileOutputStream(file_))
-    { 
-        output.write(image_);
-        return "Saved file";
-    } 
-    catch(IOException e)
-    {
-        return "Error saving file";
-    }
+        String message = null;
+        try{
+            output = new FileOutputStream(file_);
+            output.write(image_);
+            message = "Saved file";
+        }
+        catch(IOException e){
+            return message;
+        }
+        return message;
 }
     
     private void phone_txtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phone_txtKeyTyped
