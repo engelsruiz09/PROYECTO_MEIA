@@ -472,6 +472,7 @@ public class ArchivoSecuencial {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
         return null; // Retorna null si no hay ningún administrador
     }
 
