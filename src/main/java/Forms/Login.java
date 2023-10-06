@@ -334,7 +334,7 @@ public class Login extends javax.swing.JFrame {
         dispose();//cerramos el formulario actual
     }//GEN-LAST:event_JBTNEWUSUMouseClicked
 
-    public static String usertx="";
+    public static String usertx = "";
     public static String STR_LINE="";
     public static String FotoPath="";
     public static int rol = 0;
@@ -412,7 +412,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_JBTNEWUSUActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dispose();        // TODO add your handling code here:
+        System.exit(0);        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -459,21 +459,20 @@ public class ArchivoSecuencial {
         return false;
     }
 
-    private String getPrimerAdmin(String pathUsuarios) {
-        try (BufferedReader br = new BufferedReader(new FileReader(pathUsuarios))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] partes = linea.split("\\|");
-                // Si el rol es 1 (administrador) y el estado es 1 (activo)
-                if ("1".equals(partes[8]) && "1".equals(partes[9])) {
-                    return partes[0]; // Retorna el nombre de usuario del primer administrador
-                }
+private String getPrimerAdmin(String pathUsuarios) {
+    try (BufferedReader br = new BufferedReader(new FileReader(pathUsuarios))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split("\\|");
+            // Si el rol es 1 (administrador) y el estado es 1 (activo)
+            if ("1".equals(partes[8]) && "1".equals(partes[9])) {
+                return partes[0]; // Retorna el nombre de usuario del primer administrador
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        
-        return null; // Retorna null si no hay ningún administrador
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+    return null; // Retorna null si no hay ningún administrador
+}
 
 }

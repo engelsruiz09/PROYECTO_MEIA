@@ -16,7 +16,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         Login l2 = new Login();
-        user_lbl.setText(l2.usertx);
+        user_lbl.setText(Login.usertx);
         if (l2.rol == 1) 
         {
             rol_lbl.setText("Administrador");
@@ -289,6 +289,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         
     private void JBTN_IngresarUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTN_IngresarUserActionPerformed
         // TODO add your handling code here:
+        ValAdm = 1;
         validacion = 1;
         CrearUsuario C1= new CrearUsuario();
         C1.setVisible(true);
