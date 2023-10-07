@@ -497,7 +497,67 @@ public class Buscar extends javax.swing.JFrame {
 
     private void BTN_BAJAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_BAJAActionPerformed
         // TODO add your handling code here:
+        boolean esAdmin = admin_rdb.isSelected();
+        String[] fileNames = {"C:\\MEIA\\bitacora_usuario.txt", "C:\\MEIA\\usuario.txt"};
+        AESencripter fuera = new AESencripter();
+        Login s14 = new Login();
+        for (String fileName1 : fileNames) {
+                ArrayList<String> nuevasLineas = new ArrayList<>();
 
+                try (BufferedReader br = new BufferedReader(new FileReader(fileName1))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        String[] palabras = line.split("\\|");
+                        boolean modificar = false;
+
+                        // Si es admin, verifica el usuario del jtbuscar.
+                        if (!esAdmin && palabras[0].equals(jtbuscar.getText())) {
+                            modificar = true;
+                        } // Si es usuario regular, verifica el usuario actual.
+                        else if (esAdmin && palabras[0].equals(Login.usertx)) {
+                            modificar = true;
+                        }
+
+                        if (modificar) {
+                            palabras[9] = "0";
+                        }
+                        nuevasLineas.add(String.join("|", palabras));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "ERROR al leer: " + e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+
+                // Escribir las líneas modificadas de nuevo al archivo.
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName1))) {
+                    for (String nuevaLinea : nuevasLineas) {
+                        bw.write(nuevaLinea);
+                        bw.newLine();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "ERROR al escribir: " + e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+            }
+        JOptionPane.showMessageDialog(null, "El usuario se dio de baja exitosamente", "Dar de baja", WIDTH);
+        if (s14.rol == 0) {
+            Login adios = new Login();
+            adios.setVisible(true);
+            this.dispose();
+        }
+        if (s14.rol == 1) {
+            user_txt.setText("");
+            name_txt.setText("");
+            lastname_txt.setText("");
+            password_txt.setText("");
+            date_txt.setText("");
+            mail_txt.setText("");
+            phone_txt.setText("");
+            fotoPath_txt.setText("");
+            jtbuscar.setText("");
+        }
     }//GEN-LAST:event_BTN_BAJAActionPerformed
 
     private void name_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_name_txtActionPerformed
@@ -718,7 +778,15 @@ public class Buscar extends javax.swing.JFrame {
         Login.usertx = user_txt.getText();
 
         JOptionPane.showMessageDialog(this, "Usuario modificado correctamente", "Modificación", JOptionPane.INFORMATION_MESSAGE);
-
+        user_txt.setText("");
+        name_txt.setText("");
+        lastname_txt.setText("");
+        password_txt.setText("");
+        date_txt.setText("");
+        mail_txt.setText("");
+        phone_txt.setText("");
+        fotoPath_txt.setText("");
+        jtbuscar.setText("");
     }//GEN-LAST:event_BTN_MODIFICARActionPerformed
 
     private void jbbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbbuscarActionPerformed
@@ -733,11 +801,10 @@ public class Buscar extends javax.swing.JFrame {
             } else {
                 while ((line = br.readLine()) != null) {
                     String[] palabras = line.split("\\|"); // Dividir la línea en palabras usando "|"
-
                     boolean usuarioEncontrado = false;
 
                     for (String palabra : palabras) {
-                        if (palabra.equals(searchTerm)) {
+                        if (palabra.equals(searchTerm) && palabras[9].equals("1")) {
                             usuarioEncontrado = true;
                             break; // Sal del bucle de palabras si se encuentra el usuario
                         }
@@ -761,6 +828,30 @@ public class Buscar extends javax.swing.JFrame {
                     }
                     if (usuarioEncontrado) {
                         JOptionPane.showMessageDialog(this, "Usuario encontrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        Login mo = new Login();
+                        String adminval = mo.usertx;
+                        String busr = jtbuscar.getText();
+                        if (busr.equals(adminval)) {
+                            if (mo.rol == 1) {
+                                admin_rdb.setEnabled(false);
+                                user_rdb.setEnabled(false);
+                                admin_rdb.setSelected(true);
+                                user_rdb.setSelected(false);
+                                BTN_BAJA.setEnabled(false);
+                            } else {
+                                admin_rdb.setEnabled(false);
+                                user_rdb.setEnabled(false);
+                                admin_rdb.setSelected(false);
+                                user_rdb.setSelected(true);
+                                BTN_BAJA.setEnabled(true);
+                            }
+                        } else {
+                            admin_rdb.setEnabled(true);
+                            user_rdb.setEnabled(true);
+                            admin_rdb.setSelected(false);
+                            user_rdb.setSelected(false);
+                            BTN_BAJA.setEnabled(true);
+                        }
                         return;
                     }
                 }
@@ -777,7 +868,7 @@ public class Buscar extends javax.swing.JFrame {
                 boolean usuarioEncontrado = false;
 
                 for (String palabra : palabras) {
-                    if (palabra.equals(searchTerm)) {
+                    if (palabra.equals(searchTerm) && palabras[9].equals("1")) {
                         usuarioEncontrado = true;
                         break; // Sal del bucle de palabras si se encuentra el usuario
                     }
@@ -802,10 +893,32 @@ public class Buscar extends javax.swing.JFrame {
 
                 if (usuarioEncontrado) {
                     JOptionPane.showMessageDialog(this, "Usuario encontrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    Login mo = new Login();
+                    String adminval = mo.usertx;
+                    if (jtbuscar.getText() == adminval) {
+                        if (mo.rol == 1) {
+                            admin_rdb.setEnabled(false);
+                            user_rdb.setEnabled(false);
+                            admin_rdb.setSelected(true);
+                            user_rdb.setSelected(false);
+                            BTN_BAJA.setEnabled(false);
+                        } else {
+                            admin_rdb.setEnabled(false);
+                            user_rdb.setEnabled(false);
+                            admin_rdb.setSelected(false);
+                            user_rdb.setSelected(true);
+                            BTN_BAJA.setEnabled(true);
+                        }
+                    } else {
+                        admin_rdb.setEnabled(true);
+                        user_rdb.setEnabled(true);
+                        admin_rdb.setSelected(false);
+                        user_rdb.setSelected(false);
+                        BTN_BAJA.setEnabled(true);
+                    }
                     return;
                 }
             }
-
             // Si llega aquí, el usuario no se encontró en ningún archivo
             JOptionPane.showMessageDialog(this, "Usuario NO encontrado", "Error", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {

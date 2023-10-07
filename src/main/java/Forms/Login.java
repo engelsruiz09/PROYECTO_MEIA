@@ -342,68 +342,74 @@ public class Login extends javax.swing.JFrame {
     
     private void JBINICIARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBINICIARActionPerformed
         // TODO add your handling code here:
-                    // Verifica si los campos de usuario y contraseña están vacíos.
-            if (JTFUSUR.getText().isBlank() || JPFCONTRA.getText().isBlank()) {
-                // Muestra un mensaje de error si alguno de los campos está vacío.
-                JOptionPane.showMessageDialog(null, "Se deben llenar todos los campos", "Ingreso no valido", WIDTH);
+        // Verifica si los campos de usuario y contraseña están vacíos.
+        int entra = 0;
+        if (JTFUSUR.getText().isBlank() || JPFCONTRA.getText().isBlank()) {
+            // Muestra un mensaje de error si alguno de los campos está vacío.
+            JOptionPane.showMessageDialog(null, "Se deben llenar todos los campos", "Ingreso no valido", WIDTH);
+            entra = 1;
+        }
+
+        // Obtiene la contraseña ingresada por el usuario.
+        String contra = new String(JPFCONTRA.getPassword());
+
+        // Crea una instancia del encriptador AES.
+        AESencripter encripter = new AESencripter();
+
+        // Variable auxiliar para verificar si la contraseña coincide.
+        int CAux = 0;
+
+        // Variable para almacenar la contraseña desencriptada.
+        String CTN = "";
+
+        // Crea una instancia de ArchivoSecuencial para buscar usuarios.
+        ArchivoSecuencial as = new ArchivoSecuencial();
+
+        // Busca al usuario ingresado primero en la bitacora.
+        String resultado = as.Search(JTFUSUR.getText(), "C:\\MEIA\\bitacora_usuario.txt", "C:\\MEIA\\usuario.txt");
+
+        // Si el usuario es encontrado en la bitacora o el archivo principal.
+        if (!resultado.equals("null")) {
+            // Divide el resultado para obtener los detalles del usuario.
+            String[] registro = resultado.split("[|]");
+
+            // Obtiene la contraseña cifrada del registro encontrado.
+            String contCifrada = registro[3];
+            FotoPath = registro[6];
+            rol = Integer.parseInt(registro[8]);
+
+            // Intenta desencriptar la contraseña cifrada usando la clave del usuario.
+            try {
+                CTN = encripter.desencriptar(contCifrada, registro[0]);
+            } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            // Obtiene la contraseña ingresada por el usuario.
-            String contra = new String(JPFCONTRA.getPassword());
+            // Compara la contraseña desencriptada con la contraseña ingresada por el usuario.
+            if (CTN.equals(JPFCONTRA.getText())) {
+                STR_LINE = resultado;
+                CAux = 1;
+            }
 
-            // Crea una instancia del encriptador AES.
-            AESencripter encripter = new AESencripter();
-
-            // Variable auxiliar para verificar si la contraseña coincide.
-            int CAux = 0;
-
-            // Variable para almacenar la contraseña desencriptada.
-            String CTN = "";
-
-            // Crea una instancia de ArchivoSecuencial para buscar usuarios.
-            ArchivoSecuencial as = new ArchivoSecuencial();
-
-            // Busca al usuario ingresado primero en la bitacora.
-            String resultado = as.Search(JTFUSUR.getText(), "C:\\MEIA\\bitacora_usuario.txt", "C:\\MEIA\\usuario.txt");
-
-            // Si el usuario es encontrado en la bitacora o el archivo principal.
-            if (!resultado.equals("null")) {
-                // Divide el resultado para obtener los detalles del usuario.
-                String[] registro = resultado.split("[|]");
-
-                // Obtiene la contraseña cifrada del registro encontrado.
-                String contCifrada = registro[3];
-                FotoPath = registro[6];
-                rol = Integer.parseInt(registro[8]);
-
-                // Intenta desencriptar la contraseña cifrada usando la clave del usuario.
-                try {
-                    CTN = encripter.desencriptar(contCifrada, registro[0]);
-                } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                // Compara la contraseña desencriptada con la contraseña ingresada por el usuario.
-                if (CTN.equals(JPFCONTRA.getText())) {
-                    STR_LINE = resultado;
-                    CAux = 1;
-                }
-
-                // Si las contraseñas coinciden, muestra el menú principal.
-                if (CAux == 1) {
-                    CAux = 0;
-                    usertx = registro[0];
-                    MenuAdmin m1 = new MenuAdmin();
-                    m1.setVisible(true);
-                    this.dispose();
-                }
-                else{
+            // Si las contraseñas coinciden, muestra el menú principal.
+            if (CAux == 1) {
+                CAux = 0;
+                usertx = registro[0];
+                MenuAdmin m1 = new MenuAdmin();
+                m1.setVisible(true);
+                this.dispose();
+            } else {
+                if (entra != 1) {
                     JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Login", JOptionPane.INFORMATION_MESSAGE);
+                    entra = 0;
                 }
             }
-            else{
+        } else {
+            if (entra != 1) {
                 JOptionPane.showMessageDialog(this, "Usuario no encontrado", "Login", JOptionPane.INFORMATION_MESSAGE);
+                entra = 0;
             }
+        }
 
     }//GEN-LAST:event_JBINICIARActionPerformed
 
