@@ -1,6 +1,8 @@
 Forms\Buscar$4.class
 Forms\CrearUsuario$11.class
+Forms\Login$10.class
 Forms\Login$7.class
+Forms\CrearUsuario$18.class
 Forms\MenuAdmin$5.class
 Forms\Buscar$15.class
 Forms\Buscar$7.class
@@ -11,13 +13,13 @@ Forms\MenuAdmin$1.class
 Funciones\ArchivoSecuencial.class
 Forms\CrearUsuario$3.class
 Forms\Buscar$18.class
+Forms\Buscar$19.class
 Forms\CrearUsuario$12.class
 Forms\Login$1.class
 Forms\Buscar$12.class
 Forms\Buscar$16.class
 Forms\Buscar$3.class
 Forms\CrearUsuario$15.class
-Forms\MenuAdmin$8.class
 Forms\Login$4.class
 Forms\MenuAdmin$2.class
 Forms\CrearUsuario.class
@@ -29,11 +31,11 @@ Forms\CrearUsuario$8.class
 Forms\Buscar.class
 Forms\Buscar$13.class
 com\mycompany\primera_parte\PRIMERA_PARTE.class
-Forms\MenuAdmin$7.class
 Forms\CrearUsuario$16.class
 Forms\MenuAdmin.class
 Forms\CrearUsuario$1.class
 Forms\Login$2.class
+Forms\Buscar$20.class
 Forms\CrearUsuario$5.class
 Forms\MenuAdmin$3.class
 Forms\Buscar$10.class
@@ -42,6 +44,7 @@ Forms\Login$5.class
 Forms\Login$8.class
 Funciones\AESencripter.class
 Forms\Buscar$5.class
+Forms\CrearUsuario$17.class
 Forms\MenuAdmin$6.class
 Forms\Buscar$14.class
 Forms\CrearUsuario$9.class

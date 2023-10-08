@@ -147,12 +147,29 @@ public class PRIMERA_PARTE {
             System.out.println("Error.");
             e.printStackTrace();
         }
-
-        // Intenta crear el archivo indice.txt
+        
         try {
-            File indice = new File("C:\\MEIA\\indice.txt");
-            if (indice.createNewFile()) {
-                System.out.println("Archivo creado: " + indice.getName());
+            File archivo = new File("C:\\MEIA\\puntuacion.txt");
+            if (archivo.createNewFile()) {
+                System.out.println("Archivo creado: " + archivo.getName());
+                // Abre el archivo en modo de escritura
+                FileWriter fw = new FileWriter(archivo);
+
+                // Crea un BufferedWriter para escribir de manera eficiente
+                BufferedWriter bf = new BufferedWriter(fw);
+
+                // Escribe el contenido en el archivo
+                bf.write("6\n" +
+                            "3\n" +
+                                "2\n" +
+                                    "1\n" +
+                                        "2\n" +
+                                            "4\n" +
+                                                "6\n" +
+                                                    "3");
+
+                // Cierra el BufferedWriter (esto también cierra el FileWriter)
+                bf.close();
             } else {
                 System.out.println("Este archivo ya existe.");
             }
@@ -161,30 +178,24 @@ public class PRIMERA_PARTE {
             e.printStackTrace();
         }
 
-        // Intenta crear y configurar el archivo desc_indice.txt
         try {
-            File desc_indice = new File("C:\\MEIA\\desc_indice.txt");
-            if (desc_indice.createNewFile()) {
-                // Define la informacion a escribir en el archivo
-                String info = "nombre_simbolico: indice.txt" + System.getProperty("line.separator")
-                    + "fecha_creacion:" + System.getProperty("line.separator")
-                    + "usuario_creacion:" + System.getProperty("line.separator")
-                    + "fecha_modificacion:" + System.getProperty("line.separator")
-                    + "usuario_modificacion:" + System.getProperty("line.separator")
-                    + "reg_inicial:" + System.getProperty("line.separator")
-                    + "#_registros: 0" + System.getProperty("line.separator")
-                    + "registros_activos: 0" + System.getProperty("line.separator")
-                    + "registros_inactivos: 0" + System.getProperty("line.separator")
-                    + "Max. para reorganizar: 3" + System.getProperty("line.separator")
-                    + "num_bloques: 0";
+            File archivo = new File("C:\\MEIA\\resultado.txt");
+            if (archivo.createNewFile()) {
+                System.out.println("Archivo creado: " + archivo.getName());
+                // Abre el archivo en modo de escritura
+                FileWriter fw = new FileWriter(archivo);
 
-                // Escribe la informacion en el archivo
-                Escribir = new FileWriter(desc_indice, true);
-                bw = new BufferedWriter(Escribir);
-                bw.write(info);
-                bw.close();
+                // Crea un BufferedWriter para escribir de manera eficiente
+                BufferedWriter bf = new BufferedWriter(fw);
 
-                System.out.println("Archivo creado: " + desc_indice.getName());
+                // Escribe el contenido en el archivo
+                bf.write("0,20\n" +
+                            "21,30\n" +
+                                "31,45\n" +
+                                    "46,100");
+
+                // Cierra el BufferedWriter (esto también cierra el FileWriter)
+                bf.close();
             } else {
                 System.out.println("Este archivo ya existe.");
             }

@@ -1,6 +1,7 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/Application.java to edit this template
+            * donde está el proyecto https://github.com/engelsruiz09/PROYECTO_MEIA.git
  */
 package Forms;
 import java.io.*;
@@ -42,6 +43,8 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         JBINICIAR = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -74,6 +77,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        JPFCONTRA.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         JPFCONTRA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 JPFCONTRAKeyTyped(evt);
@@ -85,8 +89,8 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setText("----------------------------------------");
 
         JCBMOSTRAR.setBackground(new java.awt.Color(102, 255, 255));
-        JCBMOSTRAR.setForeground(new java.awt.Color(0, 0, 0));
         JCBMOSTRAR.setText("Mostrar Contraseña");
+        JCBMOSTRAR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JCBMOSTRAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JCBMOSTRARActionPerformed(evt);
@@ -96,6 +100,7 @@ public class Login extends javax.swing.JFrame {
         JBTNEWUSU.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         JBTNEWUSU.setForeground(new java.awt.Color(51, 102, 255));
         JBTNEWUSU.setText("CREAR USUARIO");
+        JBTNEWUSU.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JBTNEWUSU.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 JBTNEWUSUMouseClicked(evt);
@@ -116,9 +121,23 @@ public class Login extends javax.swing.JFrame {
         JBINICIAR.setBackground(new java.awt.Color(102, 255, 255));
         JBINICIAR.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         JBINICIAR.setText("INICIAR");
+        JBINICIAR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JBINICIAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBINICIARActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel4.setText("LOGIN");
+
+        jButton1.setBackground(new java.awt.Color(102, 255, 255));
+        jButton1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jButton1.setText("SALIR");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -126,32 +145,39 @@ public class Login extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(JBTNEWUSU, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JCBMOSTRAR, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JTFUSUR, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JPFCONTRA, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10))
-                            .addComponent(JBINICIAR, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(87, 87, 87))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addComponent(jLabel4)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(JCBMOSTRAR, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JTFUSUR, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JPFCONTRA, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10))
+                    .addComponent(JBINICIAR, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JBTNEWUSU, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JTFUSUR, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,9 +191,11 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(JBINICIAR, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JBTNEWUSU, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         menuBar.setBackground(new java.awt.Color(153, 153, 153));
@@ -306,7 +334,7 @@ public class Login extends javax.swing.JFrame {
         dispose();//cerramos el formulario actual
     }//GEN-LAST:event_JBTNEWUSUMouseClicked
 
-    public static String usertx="";
+    public static String usertx = "";
     public static String STR_LINE="";
     public static String FotoPath="";
     public static int rol = 0;
@@ -314,35 +342,40 @@ public class Login extends javax.swing.JFrame {
     
     private void JBINICIARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBINICIARActionPerformed
         // TODO add your handling code here:
-                    // Verifica si los campos de usuario y contraseña están vacíos.
-            if (JTFUSUR.getText().isBlank() || JPFCONTRA.getText().isBlank()) {
-                // Muestra un mensaje de error si alguno de los campos está vacío.
-                JOptionPane.showMessageDialog(null, "Se deben llenar todos los campos", "Ingreso no valido", WIDTH);
-            }
+        // Verifica si los campos de usuario y contraseña están vacíos.
+        String usernameInput = JTFUSUR.getText().trim();
+        int entra = 0;
+        if (usernameInput.isBlank() || JPFCONTRA.getText().isBlank()) {
+            // Muestra un mensaje de error si alguno de los campos está vacío.
+            JOptionPane.showMessageDialog(null, "Se deben llenar todos los campos", "Ingreso no valido", WIDTH);
+            entra = 1;
+        }
 
-            // Obtiene la contraseña ingresada por el usuario.
-            String contra = new String(JPFCONTRA.getPassword());
+        // Obtiene la contraseña ingresada por el usuario.
+        String contra = new String(JPFCONTRA.getPassword());
 
-            // Crea una instancia del encriptador AES.
-            AESencripter encripter = new AESencripter();
+        // Crea una instancia del encriptador AES.
+        AESencripter encripter = new AESencripter();
 
-            // Variable auxiliar para verificar si la contraseña coincide.
-            int CAux = 0;
+        // Variable auxiliar para verificar si la contraseña coincide.
+        int CAux = 0;
 
-            // Variable para almacenar la contraseña desencriptada.
-            String CTN = "";
+        // Variable para almacenar la contraseña desencriptada.
+        String CTN = "";
 
-            // Crea una instancia de ArchivoSecuencial para buscar usuarios.
-            ArchivoSecuencial as = new ArchivoSecuencial();
+        // Crea una instancia de ArchivoSecuencial para buscar usuarios.
+        ArchivoSecuencial as = new ArchivoSecuencial();
 
-            // Busca al usuario ingresado primero en la bitacora.
-            String resultado = as.Search(JTFUSUR.getText(), "C:\\MEIA\\bitacora_usuario.txt", "C:\\MEIA\\usuario.txt");
+        // Busca al usuario ingresado primero en la bitacora.
+        String resultado = as.Search(usernameInput, "C:\\MEIA\\bitacora_usuario.txt", "C:\\MEIA\\usuario.txt");
 
-            // Si el usuario es encontrado en la bitacora o el archivo principal.
-            if (!resultado.equals("null")) {
-                // Divide el resultado para obtener los detalles del usuario.
-                String[] registro = resultado.split("[|]");
+        // Si el usuario es encontrado en la bitacora o el archivo principal.
+        if (!resultado.equals("null")) {
+            // Divide el resultado para obtener los detalles del usuario.
+            String[] registro = resultado.split("[|]");
 
+            // Ahora verifica si el nombre de usuario ingresado coincide con el nombre de usuario del registro
+            if (JTFUSUR.getText().equals(registro[0])) {
                 // Obtiene la contraseña cifrada del registro encontrado.
                 String contCifrada = registro[3];
                 FotoPath = registro[6];
@@ -367,15 +400,35 @@ public class Login extends javax.swing.JFrame {
                     usertx = registro[0];
                     MenuAdmin m1 = new MenuAdmin();
                     m1.setVisible(true);
-                    this.setVisible(false);
+                    this.dispose();
+                } else {
+                    if (entra != 1) {
+                        JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Login", JOptionPane.INFORMATION_MESSAGE);
+                        entra = 0;
+                    }
+                }
+            } else {
+                if (entra != 1) {
+                    JOptionPane.showMessageDialog(this, "Usuario no encontrado", "Login", JOptionPane.INFORMATION_MESSAGE);
+                    entra = 0;
                 }
             }
+        } else {
+            if (entra != 1) {
+                JOptionPane.showMessageDialog(this, "Usuario no encontrado", "Login", JOptionPane.INFORMATION_MESSAGE);
+                entra = 0;
+            }
+        }
 
     }//GEN-LAST:event_JBINICIARActionPerformed
 
     private void JBTNEWUSUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTNEWUSUActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JBTNEWUSUActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.exit(0);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -427,9 +480,11 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;

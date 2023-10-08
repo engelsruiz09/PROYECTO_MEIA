@@ -4,30 +4,30 @@
  */
 package Forms;
 import java.awt.Image;
+import static java.awt.image.ImageObserver.WIDTH;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class MenuAdmin extends javax.swing.JFrame {
-
     /**
      * Creates new form MenuAdmin
      */
     public MenuAdmin() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
         Login l2 = new Login();
-        user_lbl.setText(l2.usertx);
+        user_lbl.setText(Login.usertx);
         if (l2.rol == 1) 
         {
             rol_lbl.setText("Administrador");
-            JBTN_deleteProfile1.setEnabled(false);
+            //JBTN_deleteProfile1.setEnabled(false);
         }
         else
         {
             rol_lbl.setText("Usuario");
             JBTN_IngresarUser.setEnabled(false);
             JBTN_backup.setEnabled(false);
-            JBTN_search.setEnabled(false);
+            JBTN_search.setEnabled(true);
         }
         foto_lbl.setIcon(new ImageIcon(l2.FotoPath));
         
@@ -42,14 +42,12 @@ public class MenuAdmin extends javax.swing.JFrame {
         JBTN_backup = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         JBTN_IngresarUser = new javax.swing.JButton();
-        JBTN_modify = new javax.swing.JButton();
         foto_lbl = new javax.swing.JLabel();
         user_lbl = new javax.swing.JLabel();
         rol_lbl = new javax.swing.JLabel();
         JBTN_search = new javax.swing.JButton();
         JBTN_logout = new javax.swing.JButton();
-        JBTN_DARBAJANOADMIN = new javax.swing.JButton();
-        JBTN_deleteProfile1 = new javax.swing.JButton();
+        jlsilencio = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -73,6 +71,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         JBTN_backup.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         JBTN_backup.setForeground(new java.awt.Color(255, 255, 255));
         JBTN_backup.setText("Backup");
+        JBTN_backup.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JBTN_backup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBTN_backupActionPerformed(evt);
@@ -88,37 +87,25 @@ public class MenuAdmin extends javax.swing.JFrame {
         JBTN_IngresarUser.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         JBTN_IngresarUser.setForeground(new java.awt.Color(255, 255, 255));
         JBTN_IngresarUser.setText("Ingresar usuario");
+        JBTN_IngresarUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JBTN_IngresarUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBTN_IngresarUserActionPerformed(evt);
             }
         });
 
-        JBTN_modify.setBackground(new java.awt.Color(102, 102, 102));
-        JBTN_modify.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        JBTN_modify.setForeground(new java.awt.Color(255, 255, 255));
-        JBTN_modify.setText("Modificar datos");
-        JBTN_modify.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBTN_modifyActionPerformed(evt);
-            }
-        });
-
         foto_lbl.setBackground(new java.awt.Color(153, 153, 153));
         foto_lbl.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        foto_lbl.setForeground(new java.awt.Color(0, 0, 0));
         foto_lbl.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         user_lbl.setBackground(new java.awt.Color(102, 255, 255));
         user_lbl.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        user_lbl.setForeground(new java.awt.Color(0, 0, 0));
         user_lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         user_lbl.setText("User");
         user_lbl.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         rol_lbl.setBackground(new java.awt.Color(102, 255, 255));
         rol_lbl.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        rol_lbl.setForeground(new java.awt.Color(0, 0, 0));
         rol_lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rol_lbl.setText("Rol");
         rol_lbl.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -126,7 +113,8 @@ public class MenuAdmin extends javax.swing.JFrame {
         JBTN_search.setBackground(new java.awt.Color(102, 102, 102));
         JBTN_search.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         JBTN_search.setForeground(new java.awt.Color(255, 255, 255));
-        JBTN_search.setText("Buscar usuario");
+        JBTN_search.setText("Acciones Usuario");
+        JBTN_search.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JBTN_search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBTN_searchActionPerformed(evt);
@@ -137,58 +125,45 @@ public class MenuAdmin extends javax.swing.JFrame {
         JBTN_logout.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         JBTN_logout.setForeground(new java.awt.Color(255, 255, 255));
         JBTN_logout.setText("Cerrar sesión");
+        JBTN_logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JBTN_logout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBTN_logoutActionPerformed(evt);
             }
         });
 
-        JBTN_DARBAJANOADMIN.setBackground(new java.awt.Color(102, 102, 102));
-        JBTN_DARBAJANOADMIN.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        JBTN_DARBAJANOADMIN.setForeground(new java.awt.Color(255, 255, 255));
-        JBTN_DARBAJANOADMIN.setText("Dar de Baja");
-        JBTN_DARBAJANOADMIN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBTN_DARBAJANOADMINActionPerformed(evt);
-            }
-        });
-
-        JBTN_deleteProfile1.setBackground(new java.awt.Color(102, 102, 102));
-        JBTN_deleteProfile1.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        JBTN_deleteProfile1.setForeground(new java.awt.Color(255, 255, 255));
-        JBTN_deleteProfile1.setText("Eliminar perfil");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JBTN_DARBAJANOADMIN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JBTN_IngresarUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JBTN_deleteProfile1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(JBTN_search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JBTN_modify, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
-                    .addComponent(JBTN_backup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(19, 19, 19))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jlsilencio, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(user_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rol_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(foto_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(JBTN_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(70, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(112, 112, 112)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(user_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(rol_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(foto_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(jLabel1))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(JBTN_IngresarUser)
+                                .addGap(27, 27, 27)
+                                .addComponent(JBTN_search))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(113, 113, 113)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(JBTN_backup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(JBTN_logout, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,19 +178,18 @@ public class MenuAdmin extends javax.swing.JFrame {
                 .addComponent(rol_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JBTN_DARBAJANOADMIN)
-                    .addComponent(JBTN_modify, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JBTN_IngresarUser)
                     .addComponent(JBTN_search))
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JBTN_deleteProfile1)
-                    .addComponent(JBTN_backup, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(JBTN_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(JBTN_backup, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(JBTN_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jlsilencio))))
         );
 
         fileMenu.setMnemonic('f');
@@ -302,6 +276,7 @@ public class MenuAdmin extends javax.swing.JFrame {
 
     public static int ValAdm=0;
     public static int ValMod=0;
+    public static int validacion;
     
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
@@ -311,20 +286,20 @@ public class MenuAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_JBTN_backupActionPerformed
 
+        
     private void JBTN_IngresarUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTN_IngresarUserActionPerformed
         // TODO add your handling code here:
+        ValAdm = 1;
+        validacion = 1;
         CrearUsuario C1= new CrearUsuario();
         C1.setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_JBTN_IngresarUserActionPerformed
-
-    private void JBTN_modifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTN_modifyActionPerformed
-        // TODO add your handling code here:
-        ValMod=2;//1 es que vino para buscar
-        Buscar of1 = new Buscar();
-        of1.setVisible(true);
-    }//GEN-LAST:event_JBTN_modifyActionPerformed
-
+    
+    public int obtenerTexto() {
+        return validacion;
+    }
+    
     private void JBTN_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTN_searchActionPerformed
         // TODO add your handling code here:
         //Busqueda de usuario
@@ -332,19 +307,16 @@ public class MenuAdmin extends javax.swing.JFrame {
         ValMod=1;//1 es que vino para buscar
         Buscar of1 = new Buscar();
         of1.setVisible(true);
-
+        this.dispose();
     }//GEN-LAST:event_JBTN_searchActionPerformed
 
     private void JBTN_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTN_logoutActionPerformed
         // TODO add your handling code here:
         Login l1 = new Login();
+        this.dispose();
+        JOptionPane.showMessageDialog(null, "Se ha cerrado sesion actual", "Sesion", WIDTH);
         l1.setVisible(true);
-        this.setVisible(false);
     }//GEN-LAST:event_JBTN_logoutActionPerformed
-
-    private void JBTN_DARBAJANOADMINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTN_DARBAJANOADMINActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JBTN_DARBAJANOADMINActionPerformed
 
     /**
      * @param args the command line arguments
@@ -382,12 +354,9 @@ public class MenuAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton JBTN_DARBAJANOADMIN;
     private javax.swing.JButton JBTN_IngresarUser;
     private javax.swing.JButton JBTN_backup;
-    private javax.swing.JButton JBTN_deleteProfile1;
     private javax.swing.JButton JBTN_logout;
-    private javax.swing.JButton JBTN_modify;
     private javax.swing.JButton JBTN_search;
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentsMenuItem;
@@ -401,6 +370,7 @@ public class MenuAdmin extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jlsilencio;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
