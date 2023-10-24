@@ -15,15 +15,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import static Forms.CrearUsuario.fotoPath;
 import javax.swing.JFileChooser;
-//import javax.swing.JOptionPane;
-//import javax.swing.filechooser.FileNameExtensionFilter;
-//import java.io.BufferedReader;
-//import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.io.FileReader;
-//import java.io.IOException;
 import javax.swing.JOptionPane;
-//import Funciones.ArchivoSecuencial;
 import Funciones.AESencripter;
 import java.io.FileReader;
 import java.io.File;
@@ -34,9 +26,10 @@ import java.io.FileNotFoundException;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import com.mycompany.primera_parte.ArchivoSecuencialIndizado;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Buscar extends javax.swing.JFrame {
 
@@ -49,9 +42,9 @@ public class Buscar extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);//para colocarlo en medio de la pantalla
 
         Login s13 = new Login();
-        //String usu = s13.usertx;
+        
 
-        if (s13.rol == 0) {
+        if (s13.rol == 0) {//esto del proyecto pasado
             //JBTN_deleteProfile1.setEnabled(false);
             AESencripter fuera = new AESencripter();
             String fileName = "C:\\MEIA\\bitacora_usuario.txt"; // Reemplaza con la ruta de tu archivo
@@ -679,383 +672,66 @@ public class Buscar extends javax.swing.JFrame {
     }//GEN-LAST:event_user_rdbActionPerformed
 
     private void BTN_MODIFICARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_MODIFICARActionPerformed
+        System.out.println("Ingresando a BTN_MODIFICARActionPerformed");
         boolean esAdmin = admin_rdb.isSelected();
-        String[] fileNames = {"C:\\MEIA\\bitacora_usuario.txt", "C:\\MEIA\\usuario.txt"};
         AESencripter fuera = new AESencripter();
-        Login s14 = new Login();
+
         if (emptyFields()) {
             JOptionPane.showMessageDialog(null, "Debe buscar algun usuario", "Error de modificacion", WIDTH);
             return;
         }
-        if (s14.rol == 0) {
-            
-            String contra = new String(password_txt.getPassword());
-            int VPaso = 0; // Variable de control para validar la contraseña
-            try {
-                String puntuacio = "C:\\MEIA\\puntuacion.txt"; // Reemplaza con la ruta de tu archivo
-                String resultado = "C:\\MEIA\\resultado.txt";
-                // Código que puede arrojar FileNotFoundException
-                BufferedReader lector = new BufferedReader(new FileReader(puntuacio));
-                BufferedReader lector2 = new BufferedReader(new FileReader(resultado));
-                String linea;
-                String linea2;
-                int puntuacion = 0;
-                int mayus = 0;
-                int letra = 0;
-                int numero = 0;
-                int especial = 0;
-                int v1 = 0;
-                int v2 = 0;
-                int cont = 0;
-                StringBuilder puntua = new StringBuilder();
-                StringBuilder resul = new StringBuilder();
-                String contras = password_txt.getText();
-                try {
-                    while ((linea = lector.readLine()) != null) {
-                        puntua.append(linea).append("\n");
-                    }
-                    while ((linea2 = lector2.readLine()) != null) {
-                        resul.append(linea2).append("\n");
 
-                    }
-                    int puntuac = Character.getNumericValue(puntua.charAt(0));
-                    if (puntuac != 0) {
-                        if (contras.length() >= puntuac) {
-                            puntuac = Character.getNumericValue(puntua.charAt(1));
-                            puntuacion = puntuac * contras.length();
-                            for (int i = 0; i < contras.length(); i++) {
-                                char caracter = contras.charAt(i);
-                                if (Character.isUpperCase(caracter)) {
-                                    mayus++;
-                                }
-                            }
-                            puntuac = Character.getNumericValue(puntua.charAt(2));
-                            puntuacion = puntuacion + (puntuac * mayus);
-                            for (int i = 0; i < contras.length(); i++) {
-                                if (Character.isLetter(contras.charAt(i))) {
-                                    letra++;
-                                }
-                            }
-                            puntuac = Character.getNumericValue(puntua.charAt(3));
-                            puntuacion = puntuacion + (letra + puntuac);
-                            for (int i = 0; i < contras.length(); i++) {
-                                if (Character.isDigit(contras.charAt(i))) {
-                                    numero++;
-                                }
-                            }
-                            puntuac = Character.getNumericValue(puntua.charAt(0));
-                            puntuacion = puntuacion + (numero + puntuac);
-                            for (int i = 0; i < contras.length(); i++) {
-                                switch (contras.charAt(i)) {
-                                    case '/':
-                                        especial++;
-                                        break;
-                                    case '¿':
-                                        especial++;
-                                        break;
-                                    case '?':
-                                        especial++;
-                                        break;
-                                    case '%':
-                                        especial++;
-                                        break;
-                                    case '$':
-                                        especial++;
-                                        break;
-                                    case '#':
-                                        especial++;
-                                        break;
-                                }
-                            }
-                            puntuac = Character.getNumericValue(puntua.charAt(5));
-                            puntuacion = puntuacion + especial * (contras.length() + puntuac);
-                            if (numero == 0 && especial == 0) {
-                                puntuac = Character.getNumericValue(puntua.charAt(6));
-                                puntuacion = puntuacion - puntuac;
-                            }
-                            if (especial == 0 && letra == 0) {
-                                puntuac = Character.getNumericValue(puntua.charAt(7));
-                                puntuacion = puntuacion - puntuac;
-                            }
-                            String resultadostotal = resul.toString();
-                            String[] lineas = resultadostotal.split("\n");
-                            for (String partes : lineas) {
-                                String[] valores = partes.split(",");
-                                cont++;
-                                v1 = Integer.parseInt(valores[0]);
-                                v2 = Integer.parseInt(valores[1]);
-                                if (cont == 1 && puntuacion >= v1 && puntuacion <= v2) {
-                                    JOptionPane.showMessageDialog(this, "CUIDADO, su Contraseña es insegura", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                                    VPaso = 1;
-                                } else if (cont == 2 && puntuacion >= v1 && puntuacion <= v2) {
-                                    JOptionPane.showMessageDialog(this, "OJO, se Contraseña es poco segura", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                                    VPaso = 1;
-                                } else if (cont == 3 && puntuacion >= v1 && puntuacion <= v2) {
-                                    JOptionPane.showMessageDialog(this, "BIEN, su Contraseña es segura", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                                    VPaso = 0;
-                                } else if (cont == 4 && puntuacion >= v1) {
-                                    JOptionPane.showMessageDialog(this, "PERFECTO, su Contraseña es muy segura", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                                    VPaso = 0;
-                                }
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(this, "Su Contraseña es muy corta", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                            VPaso = 1;
-                        }
-                    }
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(this, "ERROR revisa el codigo", "Error", JOptionPane.INFORMATION_MESSAGE);
-                }
-            } catch (FileNotFoundException e) {
-                // Manejo de la excepción
-                JOptionPane.showMessageDialog(this, "ERROR no se encontro el archivo", "Error", JOptionPane.INFORMATION_MESSAGE);
-            }
-            if (VPaso == 1) {
-                // Acciones adicionales si la contraseña no es válida
-                password_txt.setText("");  // Limpia el campo de contraseña
-                return;  // Termina la ejecución del método sin realizar más acciones
-            }
-            
-            for (String fileName1 : fileNames) {
-                ArrayList<String> nuevasLineas = new ArrayList<>();
+        // Validar contraseña al inicio
+        String resultadoValidacion = validarcontrasena(password_txt.getText());
+        JOptionPane.showMessageDialog(this, resultadoValidacion, "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
 
-                try (BufferedReader br = new BufferedReader(new FileReader(fileName1))) {
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        String[] palabras = line.split("\\|");
-                        boolean modificar = false;
-
-                        // Si es admin, verifica el usuario del jtbuscar.
-                        if (!esAdmin && palabras[0].equals(jtbuscar.getText())) {
-                            modificar = true;
-                        } // Si es usuario regular, verifica el usuario actual.
-                        else if (esAdmin && palabras[0].equals(Login.usertx)) {
-                            modificar = true;
-                        }
-
-                        if (modificar) {
-                            palabras[0] = user_txt.getText();
-                            palabras[1] = name_txt.getText();
-                            palabras[2] = lastname_txt.getText();
-                            palabras[3] = fuera.encriptar(password_txt.getText(), palabras[0]);
-                            palabras[4] = date_txt.getText();
-                            palabras[5] = mail_txt.getText();
-                            palabras[6] = fotoPath_txt.getText();
-                            palabras[7] = phone_txt.getText();
-                            if (admin_rdb.isSelected()) {
-                                palabras[8] = "1";
-                            } else {
-                                palabras[8] = "0";
-                            }
-                        }
-                        nuevasLineas.add(String.join("|", palabras));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "ERROR al leer: " + e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-
-                // Escribir las líneas modificadas de nuevo al archivo.
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName1))) {
-                    for (String nuevaLinea : nuevasLineas) {
-                        bw.write(nuevaLinea);
-                        bw.newLine();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "ERROR al escribir: " + e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-            }
-        } else {
-            String contra = new String(password_txt.getPassword());
-            int VPaso = 0; // Variable de control para validar la contraseña
-            try {
-                String puntuacio = "C:\\MEIA\\puntuacion.txt"; // Reemplaza con la ruta de tu archivo
-                String resultado = "C:\\MEIA\\resultado.txt";
-                // Código que puede arrojar FileNotFoundException
-                BufferedReader lector = new BufferedReader(new FileReader(puntuacio));
-                BufferedReader lector2 = new BufferedReader(new FileReader(resultado));
-                String linea;
-                String linea2;
-                int puntuacion = 0;
-                int mayus = 0;
-                int letra = 0;
-                int numero = 0;
-                int especial = 0;
-                int v1 = 0;
-                int v2 = 0;
-                int cont = 0;
-                StringBuilder puntua = new StringBuilder();
-                StringBuilder resul = new StringBuilder();
-                String contras = password_txt.getText();
-                try {
-                    while ((linea = lector.readLine()) != null) {
-                        puntua.append(linea).append("\n");
-                    }
-                    while ((linea2 = lector2.readLine()) != null) {
-                        resul.append(linea2).append("\n");
-
-                    }
-                    int puntuac = Character.getNumericValue(puntua.charAt(0));
-                    if (puntuac != 0) {
-                        if (contras.length() >= puntuac) {
-                            puntuac = Character.getNumericValue(puntua.charAt(1));
-                            puntuacion = puntuac * contras.length();
-                            for (int i = 0; i < contras.length(); i++) {
-                                char caracter = contras.charAt(i);
-                                if (Character.isUpperCase(caracter)) {
-                                    mayus++;
-                                }
-                            }
-                            puntuac = Character.getNumericValue(puntua.charAt(2));
-                            puntuacion = puntuacion + (puntuac * mayus);
-                            for (int i = 0; i < contras.length(); i++) {
-                                if (Character.isLetter(contras.charAt(i))) {
-                                    letra++;
-                                }
-                            }
-                            puntuac = Character.getNumericValue(puntua.charAt(3));
-                            puntuacion = puntuacion + (letra + puntuac);
-                            for (int i = 0; i < contras.length(); i++) {
-                                if (Character.isDigit(contras.charAt(i))) {
-                                    numero++;
-                                }
-                            }
-                            puntuac = Character.getNumericValue(puntua.charAt(0));
-                            puntuacion = puntuacion + (numero + puntuac);
-                            for (int i = 0; i < contras.length(); i++) {
-                                switch (contras.charAt(i)) {
-                                    case '/':
-                                        especial++;
-                                        break;
-                                    case '¿':
-                                        especial++;
-                                        break;
-                                    case '?':
-                                        especial++;
-                                        break;
-                                    case '%':
-                                        especial++;
-                                        break;
-                                    case '$':
-                                        especial++;
-                                        break;
-                                    case '#':
-                                        especial++;
-                                        break;
-                                }
-                            }
-                            puntuac = Character.getNumericValue(puntua.charAt(5));
-                            puntuacion = puntuacion + especial * (contras.length() + puntuac);
-                            if (numero == 0 && especial == 0) {
-                                puntuac = Character.getNumericValue(puntua.charAt(6));
-                                puntuacion = puntuacion - puntuac;
-                            }
-                            if (especial == 0 && letra == 0) {
-                                puntuac = Character.getNumericValue(puntua.charAt(7));
-                                puntuacion = puntuacion - puntuac;
-                            }
-                            String resultadostotal = resul.toString();
-                            String[] lineas = resultadostotal.split("\n");
-                            for (String partes : lineas) {
-                                String[] valores = partes.split(",");
-                                cont++;
-                                v1 = Integer.parseInt(valores[0]);
-                                v2 = Integer.parseInt(valores[1]);
-                                if (cont == 1 && puntuacion >= v1 && puntuacion <= v2) {
-                                    JOptionPane.showMessageDialog(this, "CUIDADO, su Contraseña es insegura", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                                    VPaso = 1;
-                                } else if (cont == 2 && puntuacion >= v1 && puntuacion <= v2) {
-                                    JOptionPane.showMessageDialog(this, "OJO, se Contraseña es poco segura", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                                    VPaso = 1;
-                                } else if (cont == 3 && puntuacion >= v1 && puntuacion <= v2) {
-                                    JOptionPane.showMessageDialog(this, "BIEN, su Contraseña es segura", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                                    VPaso = 0;
-                                } else if (cont == 4 && puntuacion >= v1) {
-                                    JOptionPane.showMessageDialog(this, "PERFECTO, su Contraseña es muy segura", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                                    VPaso = 0;
-                                }
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(this, "Su Contraseña es muy corta", "Nivel de seguridad", JOptionPane.INFORMATION_MESSAGE);
-                            VPaso = 1;
-                        }
-                    }
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(this, "ERROR revisa el codigo", "Error", JOptionPane.INFORMATION_MESSAGE);
-                }
-            } catch (FileNotFoundException e) {
-                // Manejo de la excepción
-                JOptionPane.showMessageDialog(this, "ERROR no se encontro el archivo", "Error", JOptionPane.INFORMATION_MESSAGE);
-            }
-            if (VPaso == 1) {
-                // Acciones adicionales si la contraseña no es válida
-                password_txt.setText("");  // Limpia el campo de contraseña
-                return;  // Termina la ejecución del método sin realizar más acciones
-            }
-            
-// Usando los radio buttons para determinar si la operación se realiza como admin.
-            for (String fileName1 : fileNames) {
-                ArrayList<String> nuevasLineas = new ArrayList<>();
-
-                try (BufferedReader br = new BufferedReader(new FileReader(fileName1))) {
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        String[] palabras = line.split("\\|");
-                        boolean modificar = false;
-
-                        // Si es admin, verifica el usuario del jtbuscar.
-                        if (esAdmin && palabras[0].equals(jtbuscar.getText())) {
-                            modificar = true;
-                        } // Si es usuario regular, verifica el usuario actual.
-                        else if (!esAdmin && palabras[0].equals(Login.usertx)) {
-                            modificar = true;
-                        }
-
-                        if (modificar) {
-                            palabras[0] = user_txt.getText();
-                            palabras[1] = name_txt.getText();
-                            palabras[2] = lastname_txt.getText();
-                            palabras[3] = fuera.encriptar(password_txt.getText(), palabras[0]);
-                            palabras[4] = date_txt.getText();
-                            palabras[5] = mail_txt.getText();
-                            palabras[6] = fotoPath_txt.getText();
-                            palabras[7] = phone_txt.getText();
-                            if (admin_rdb.isSelected()) {
-                                palabras[8] = "1";
-                            } else {
-                                palabras[8] = "0";
-                            }
-                        }
-                        nuevasLineas.add(String.join("|", palabras));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "ERROR al leer: " + e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-
-                // Escribir las líneas modificadas de nuevo al archivo.
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName1))) {
-                    for (String nuevaLinea : nuevasLineas) {
-                        bw.write(nuevaLinea);
-                        bw.newLine();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "ERROR al escribir: " + e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-            }
+        // Interrumpir ejecución si la contraseña no es válida
+        if ("Su Contraseña es muy corta".equals(resultadoValidacion) || 
+            "CUIDADO, su Contraseña es insegura".equals(resultadoValidacion) || 
+            "OJO, se Contraseña es poco segura".equals(resultadoValidacion)) {
+            password_txt.setText("");  // Limpia el campo de contraseña
+            return;  // Termina la ejecución del método sin realizar más acciones
         }
 
-        Login.usertx = user_txt.getText();
-        
+        try {
+            // Preparar los datos para modificar
+            String[] nuevosDatos = new String[]{
+                user_txt.getText(),        // usuario
+                name_txt.getText(),        // Nombre
+                lastname_txt.getText(),    // Apellido
+                fuera.encriptar(password_txt.getText(), user_txt.getText()), // Password
+                date_txt.getText(),        // fecha_nacimiento
+                mail_txt.getText(),        // correo_electronico
+                fotoPath_txt.getText(),    // path_fotografia
+                phone_txt.getText(),       // Telefono
+                admin_rdb.isSelected() ? "1" : "0"  // Rol
+            };
+            String estatus = "1";
+            
+                // Imprimir datos para depuración
+            System.out.println("Datos para modificar:");
+            for (String dato : nuevosDatos) {
+                System.out.println(dato);
+            }
+            // Llamar a modificarUsuario
+            ArchivoSecuencialIndizado archivo = new ArchivoSecuencialIndizado();
+            System.out.println("Intentando modificar usuario...");
 
-        JOptionPane.showMessageDialog(this, "Usuario modificado correctamente", "Modificación", JOptionPane.INFORMATION_MESSAGE);
-        
+            boolean modificado = archivo.modificarUsuario(jtbuscar.getText(), nuevosDatos, estatus);
+            System.out.println("Usuario modificado: " + modificado);
+
+            if (modificado) {
+                JOptionPane.showMessageDialog(this, "Usuario modificado correctamente", "Modificación", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al modificar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Se produjo un error al modificar el usuario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Resetear campos del formulario
         user_txt.setText("");
         name_txt.setText("");
         lastname_txt.setText("");
@@ -1065,156 +741,199 @@ public class Buscar extends javax.swing.JFrame {
         phone_txt.setText("");
         fotoPath_txt.setText("");
         jtbuscar.setText("");
-        
-
-        
-        
-//        // Cerrar el formulario actual.
-//        this.dispose();
-//
-//        // Crear y mostrar una nueva instancia del formulario de inicio de sesión.
-//        Login loginForm = new Login();
-//        loginForm.setVisible(true);
-
-
     }//GEN-LAST:event_BTN_MODIFICARActionPerformed
 
-    private void jbbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbbuscarActionPerformed
-        String fileName = "C:\\MEIA\\bitacora_usuario.txt"; // Reemplaza con la ruta de tu archivo
-        String fileName2 = "C:\\MEIA\\usuario.txt";
-        String searchTerm = jtbuscar.getText(); // Reemplaza con el dato que estás buscando
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            if (searchTerm.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese un usuario a buscar", "Error", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            } else {
-                while ((line = br.readLine()) != null) {
-                    String[] palabras = line.split("\\|"); // Dividir la línea en palabras usando "|"
-                    boolean usuarioEncontrado = false;
+private String validarcontrasena(String contrasena) {
+    String contra = new String(password_txt.getPassword());
 
-                    // Verifica directamente el nombre de usuario con el termino de busqueda
-                    if (palabras[0].equals(searchTerm) && palabras[9].equals("1")) {
-                        usuarioEncontrado = true;
-                    }
+    try {
+        String puntuacio = "C:\\MEIA\\puntuacion.txt";
+        String resultado = "C:\\MEIA\\resultado.txt";
 
-                    AESencripter fuera2 = new AESencripter();
-                    if (usuarioEncontrado) {
-                        user_txt.setText(palabras[0]);
-                        name_txt.setText(palabras[1]);
-                        lastname_txt.setText(palabras[2]);
-                        try {
-                            String desc = fuera2.desencriptar(palabras[3], palabras[0]);
-                            password_txt.setText(desc);
-                        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-                            // Manejar las excepciones aquí
-                            e.printStackTrace(); // Imprime información sobre la excepción en la consola
-                        }
-                        date_txt.setText(palabras[4]);
-                        mail_txt.setText(palabras[5]);
-                        phone_txt.setText(palabras[7]);
-                        fotoPath_txt.setText(palabras[6]);
-                    }
-                    if (usuarioEncontrado) {
-                        JOptionPane.showMessageDialog(this, "Usuario encontrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                        Login mo = new Login();
-                        String adminval = mo.usertx;
-                        if (jtbuscar.getText().equals(adminval)) {
-                            if (mo.rol == 1) {
-                                admin_rdb.setEnabled(false);
-                                user_rdb.setEnabled(false);
-                                admin_rdb.setSelected(true);
-                                user_rdb.setSelected(false);
-                                BTN_BAJA.setEnabled(false);
-                            } else {
-                                admin_rdb.setEnabled(false);
-                                user_rdb.setEnabled(false);
-                                admin_rdb.setSelected(false);
-                                user_rdb.setSelected(true);
-                                BTN_BAJA.setEnabled(true);
-                            }
-                        } else {
-                            admin_rdb.setEnabled(true);
-                            user_rdb.setEnabled(true);
-                            admin_rdb.setSelected(false);
-                            user_rdb.setSelected(false);
-                            BTN_BAJA.setEnabled(true);
-                        }
-                        return;
-                    }
+        BufferedReader lector = new BufferedReader(new FileReader(puntuacio));
+        BufferedReader lector2 = new BufferedReader(new FileReader(resultado));
+
+        StringBuilder puntua = new StringBuilder();
+        StringBuilder resul = new StringBuilder();
+        String contras = password_txt.getText();
+
+        String linea;
+        while ((linea = lector.readLine()) != null) {
+            puntua.append(linea).append("\n");
+        }
+
+        while ((linea = lector2.readLine()) != null) {
+            resul.append(linea).append("\n");
+        }
+
+        int puntuac = Character.getNumericValue(puntua.charAt(0));
+
+        if (puntuac == 0 || contras.length() < puntuac) {
+            return "Su Contraseña es muy corta";
+        }
+
+        int puntuacion = 0;
+        int mayus = 0;
+        int letra = 0;
+        int numero = 0;
+        int especial = 0;
+
+        puntuac = Character.getNumericValue(puntua.charAt(1));
+        puntuacion = puntuac * contras.length();
+        for (int i = 0; i < contras.length(); i++) {
+            char caracter = contras.charAt(i);
+            if (Character.isUpperCase(caracter)) {
+                mayus++;
+            }
+        }
+        puntuac = Character.getNumericValue(puntua.charAt(2));
+        puntuacion = puntuacion + (puntuac * mayus);
+        for (int i = 0; i < contras.length(); i++) {
+            if (Character.isLetter(contras.charAt(i))) {
+                letra++;
+            }
+        }
+        puntuac = Character.getNumericValue(puntua.charAt(3));
+        puntuacion = puntuacion + (letra + puntuac);
+        for (int i = 0; i < contras.length(); i++) {
+            if (Character.isDigit(contras.charAt(i))) {
+                numero++;
+            }
+        }
+        puntuac = Character.getNumericValue(puntua.charAt(0));
+        puntuacion = puntuacion + (numero + puntuac);
+        for (int i = 0; i < contras.length(); i++) {
+            switch (contras.charAt(i)) {
+                case '/':
+                    especial++;
+                    break;
+                case '¿':
+                    especial++;
+                    break;
+                case '?':
+                    especial++;
+                    break;
+                case '%':
+                    especial++;
+                    break;
+                case '$':
+                    especial++;
+                    break;
+                case '#':
+                    especial++;
+                    break;
+            }
+        }
+        puntuac = Character.getNumericValue(puntua.charAt(5));
+        puntuacion = puntuacion + especial * (contras.length() + puntuac);
+        if (numero == 0 && especial == 0) {
+            puntuac = Character.getNumericValue(puntua.charAt(6));
+            puntuacion = puntuacion - puntuac;
+        }
+        if (especial == 0 && letra == 0) {
+            puntuac = Character.getNumericValue(puntua.charAt(7));
+            puntuacion = puntuacion - puntuac;
+        }
+
+        String resultadostotal = resul.toString();
+        String[] lineas = resultadostotal.split("\n");
+        for (String partes : lineas) {
+            String[] valores = partes.split(",");
+            int v1 = Integer.parseInt(valores[0]);
+            int v2 = Integer.parseInt(valores[1]);
+            if (puntuacion >= v1 && puntuacion <= v2) {
+                if (v2 == 20) {
+                    return "CUIDADO, su Contraseña es insegura";
+                } else if (v2 == 30) {
+                    return "OJO, se Contraseña es poco segura";
+                } else if (v2 == 45) {
+                    return "BIEN, su Contraseña es segura";
+                } else if (v2 == 100) {
+                    return "PERFECTO, su Contraseña es muy segura";
                 }
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "ERROR", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
-// Luego, si no se encuentra en el primer archivo, buscar en el segundo archivo fileName2
-        try (BufferedReader br2 = new BufferedReader(new FileReader(fileName2))) {
-            String line2;
-            while ((line2 = br2.readLine()) != null) {
-                String[] palabras = line2.split("\\|"); // Dividir la línea en palabras usando "|"
 
-                boolean usuarioEncontrado = false;
+    } catch (FileNotFoundException e) {
+        return "ERROR no se encontro el archivo";
+    } catch (IOException e) {
+        return "ERROR revisa el codigo";
+    }
 
-                // Verifica directamente el nombre de usuario con el termino de busqueda
-                if (palabras[0].equals(searchTerm) && palabras[9].equals("1")) {
-                    usuarioEncontrado = true;
-                }
+    return "Validación desconocida";
+}
 
-                AESencripter fuera = new AESencripter();
-                if (usuarioEncontrado) {
-                    user_txt.setText(palabras[0]);
-                    name_txt.setText(palabras[1]);
-                    lastname_txt.setText(palabras[2]);
-                    try {
-                        String desc = fuera.desencriptar(palabras[3], palabras[0]);
-                        password_txt.setText(desc);
-                    } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-                        // Manejar las excepciones aquí
-                        e.printStackTrace(); // Imprime información sobre la excepción en la consola
+    
+    
+    
+    private void jbbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbbuscarActionPerformed
+        String searchTerm = jtbuscar.getText();
+
+        if (searchTerm.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un usuario a buscar", "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        } else {
+            try {
+                ArchivoSecuencialIndizado archivo = new ArchivoSecuencialIndizado();
+
+                String[] usuarioData = archivo.buscarUsuarioCompleto(searchTerm);
+                if (usuarioData != null) {
+                    // Poblamos los campos de texto con los datos del usuario
+                    user_txt.setText(usuarioData[2]);
+                    name_txt.setText(usuarioData[3]);
+                    lastname_txt.setText(usuarioData[4]);
+                    jtbuscar.setText(user_txt.getText());
+                    
+                    AESencripter fuera = new AESencripter();
+                    String desc = fuera.desencriptar(usuarioData[5], usuarioData[2]);
+                    password_txt.setText(desc);
+
+                    date_txt.setText(usuarioData[6]);
+                    mail_txt.setText(usuarioData[7]);
+                    fotoPath_txt.setText(usuarioData[8]);
+                    phone_txt.setText(usuarioData[9]);
+
+                    // Si es admin
+                    if (usuarioData[10].equals("1")) {
+                        admin_rdb.setSelected(true);
+                    } else {
+                        user_rdb.setSelected(true);
                     }
-                    date_txt.setText(palabras[4]);
-                    mail_txt.setText(palabras[5]);
-                    phone_txt.setText(palabras[7]);
-                    fotoPath_txt.setText(palabras[6]);
-                }
-
-                if (usuarioEncontrado) {
-                    JOptionPane.showMessageDialog(this, "Usuario encontrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    // Logic for admin or user
                     Login mo = new Login();
-                    String adminval = mo.usertx;
-                    if (jtbuscar.getText().equals(adminval)) {
+                    if (searchTerm.equals(mo.usertx)) {
                         if (mo.rol == 1) {
                             admin_rdb.setEnabled(false);
                             user_rdb.setEnabled(false);
-                            admin_rdb.setSelected(true);
-                            user_rdb.setSelected(false);
                             BTN_BAJA.setEnabled(false);
                         } else {
                             admin_rdb.setEnabled(false);
                             user_rdb.setEnabled(false);
-                            admin_rdb.setSelected(false);
-                            user_rdb.setSelected(true);
                             BTN_BAJA.setEnabled(true);
+                            jtbuscar.setText(user_txt.getText());
                         }
                     } else {
                         admin_rdb.setEnabled(true);
                         user_rdb.setEnabled(true);
-                        admin_rdb.setSelected(false);
-                        user_rdb.setSelected(false);
                         BTN_BAJA.setEnabled(true);
                     }
-                    return;
+                    // Actualiza el contenido de jtbuscar para que refleje el nuevo nombre de usuario
+                    //jtbuscar.setText(user_txt.getText());
+                    
+                    JOptionPane.showMessageDialog(this, "Usuario encontrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Usuario NO encontrado", "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
+            } catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error al buscar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            // Si llega aquí, el usuario no se encontró en ningún archivo
-            JOptionPane.showMessageDialog(this, "Usuario NO encontrado", "Error", JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "ERROR", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jbbuscarActionPerformed
 
     private void jbvolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbvolverActionPerformed
-        MenuAdmin l1 = new MenuAdmin();
+        Login l1 = new Login();
         l1.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jbvolverActionPerformed

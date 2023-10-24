@@ -15,12 +15,13 @@ import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import com.mycompany.primera_parte.ArchivoSecuencialIndizado;
 /**
  *
  * @author JULIORUIZ
  */
 public class Login extends javax.swing.JFrame {
-
+    public static String usuarioActual = "";
     /**
      * Creates new form Login
      */
@@ -29,6 +30,7 @@ public class Login extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);//para colocarlo en medio de la pantalla
         
     }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -341,14 +343,12 @@ public class Login extends javax.swing.JFrame {
     public static int ValAdm2=0;
     
     private void JBINICIARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBINICIARActionPerformed
-        // TODO add your handling code here:
         // Verifica si los campos de usuario y contraseña están vacíos.
         String usernameInput = JTFUSUR.getText().trim();
-        int entra = 0;
+        Login.usuarioActual = JTFUSUR.getText().trim();
         if (usernameInput.isBlank() || JPFCONTRA.getText().isBlank()) {
-            // Muestra un mensaje de error si alguno de los campos está vacío.
             JOptionPane.showMessageDialog(null, "Se deben llenar todos los campos", "Ingreso no valido", WIDTH);
-            entra = 1;
+            return;
         }
 
         // Obtiene la contraseña ingresada por el usuario.
@@ -357,69 +357,49 @@ public class Login extends javax.swing.JFrame {
         // Crea una instancia del encriptador AES.
         AESencripter encripter = new AESencripter();
 
-        // Variable auxiliar para verificar si la contraseña coincide.
-        int CAux = 0;
+        try {
+            ArchivoSecuencialIndizado ASI = new ArchivoSecuencialIndizado();
+            
 
-        // Variable para almacenar la contraseña desencriptada.
-        String CTN = "";
 
-        // Crea una instancia de ArchivoSecuencial para buscar usuarios.
-        ArchivoSecuencial as = new ArchivoSecuencial();
-
-        // Busca al usuario ingresado primero en la bitacora.
-        String resultado = as.Search(usernameInput, "C:\\MEIA\\bitacora_usuario.txt", "C:\\MEIA\\usuario.txt");
-
-        // Si el usuario es encontrado en la bitacora o el archivo principal.
-        if (!resultado.equals("null")) {
-            // Divide el resultado para obtener los detalles del usuario.
-            String[] registro = resultado.split("[|]");
-
-            // Ahora verifica si el nombre de usuario ingresado coincide con el nombre de usuario del registro
-            if (JTFUSUR.getText().equals(registro[0])) {
-                // Obtiene la contraseña cifrada del registro encontrado.
-                String contCifrada = registro[3];
-                FotoPath = registro[6];
-                rol = Integer.parseInt(registro[8]);
-
-                // Intenta desencriptar la contraseña cifrada usando la clave del usuario.
-                try {
-                    CTN = encripter.desencriptar(contCifrada, registro[0]);
-                } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                // Compara la contraseña desencriptada con la contraseña ingresada por el usuario.
-                if (CTN.equals(JPFCONTRA.getText())) {
-                    STR_LINE = resultado;
-                    CAux = 1;
-                }
-
-                // Si las contraseñas coinciden, muestra el menú principal.
-                if (CAux == 1) {
-                    CAux = 0;
-                    usertx = registro[0];
-                    MenuAdmin m1 = new MenuAdmin();
-                    m1.setVisible(true);
-                    this.dispose();
-                } else {
-                    if (entra != 1) {
-                        JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Login", JOptionPane.INFORMATION_MESSAGE);
-                        entra = 0;
-                    }
-                }
-            } else {
-                if (entra != 1) {
-                    JOptionPane.showMessageDialog(this, "Usuario no encontrado", "Login", JOptionPane.INFORMATION_MESSAGE);
-                    entra = 0;
-                }
-            }
-        } else {
-            if (entra != 1) {
+            String[] resultado = ASI.buscarUsuarioYContrasena(usernameInput); 
+            if (resultado == null) {
                 JOptionPane.showMessageDialog(this, "Usuario no encontrado", "Login", JOptionPane.INFORMATION_MESSAGE);
-                entra = 0;
+                return;
             }
-        }
 
+            String usuario = resultado[0];
+            String contCifrada = resultado[1];
+            
+            FotoPath = resultado[2];        // Aquí obtienes el path_fotografia
+            rol = Integer.parseInt(resultado[3]); // Aquí obtienes el rol y lo conviertes a int
+            
+            System.out.println("Usuario obtenido: " + resultado[0]);
+            System.out.println("Contraseña obtenida: " + resultado[1]);
+            System.out.println("Fotopath: " + resultado[2]);
+            System.out.println("rol: " + resultado[3]);
+
+            // Intenta desencriptar la contraseña cifrada usando la clave del usuario.
+            String CTN = encripter.desencriptar(contCifrada, usuario);
+
+            // Compara la contraseña desencriptada con la contraseña ingresada por el usuario.
+            if (CTN.equals(JPFCONTRA.getText())) {
+                STR_LINE = String.join("|", resultado); // Asumiendo que quieres guardar el usuario y contraseña en STR_LINE.
+                usertx = usuario;
+                MenuAdmin m1 = new MenuAdmin();
+                m1.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Login", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al buscar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            ex.printStackTrace();  // Imprime la pila de llamadas en la consola
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error inesperado", "Error", JOptionPane.ERROR_MESSAGE);
+        }  
     }//GEN-LAST:event_JBINICIARActionPerformed
 
     private void JBTNEWUSUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTNEWUSUActionPerformed

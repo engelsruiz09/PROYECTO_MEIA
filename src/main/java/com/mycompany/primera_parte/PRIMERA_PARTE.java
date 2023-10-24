@@ -5,6 +5,10 @@
 package com.mycompany.primera_parte;
 import Forms.*;
 import java.io.*;
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
 /**
  *
  * @author JULIORUIZ
@@ -203,6 +207,264 @@ public class PRIMERA_PARTE {
             System.out.println("Error.");
             e.printStackTrace();
         }
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+//        try {
+//            File archivoIndice = new File("C:\\MEIA\\indice_usuario.txt");
+//            if (archivoIndice.createNewFile()) {
+//                String header = "inicio|registro|posicion|usuario|siguiente|estatus";
+//                FileWriter fw = new FileWriter(archivoIndice, true);
+//                BufferedWriter bwr = new BufferedWriter(fw);
+//                bwr.write(header);
+//                bwr.newLine();
+//                bwr.close();
+//                System.out.println("Archivo creado: " + archivoIndice.getName());
+//            } else {
+//                System.out.println("El archivo indice_usuario.txt ya existe.");
+//            }
+//        } catch (IOException e) {
+//            System.out.println("Error al crear indice_usuario.txt.");
+//            e.printStackTrace();
+//        }
+        
+      
+        try {
+                // bloque inicial y su archivo descriptor:
+                int bloqueInicial = 1; // bloque 1
+                createBloqueFile(bloqueInicial);
+                createDescBloqueFile(bloqueInicial);
+            } catch (IOException e) {
+                System.out.println("Error al crear los archivos.");
+                e.printStackTrace();
+        }
+        
+
+
+
+  
+//        try {
+//            File archivoDescIndice = new File("C:\\MEIA\\desc_indice_usuario.txt");
+//            if (archivoDescIndice.createNewFile()) {
+//                int currentBloquesCount = getBloquesCountFromDescIndiceUsuario();
+//
+//                // Agrega el conteo actual de bloques a la cadena info
+//                String info = "nombre_archivo: desc_indice_usuario.txt" + System.getProperty("line.separator")
+//                    + "fecha_creacion:" + System.getProperty("line.separator")
+//                    + "usuario_creacion:" + System.getProperty("line.separator")
+//                    + "fecha_modificacion:" + System.getProperty("line.separator")
+//                    + "usuario_modificacion:" + System.getProperty("line.separator")
+//                    + "registros_activos: 0" + System.getProperty("line.separator")
+//                    + "registros_inactivos: 0" + System.getProperty("line.separator")
+//                    + "total_registros: 0" + System.getProperty("line.separator")
+//                    + "bloques: " + currentBloquesCount + System.getProperty("line.separator")
+//                    + "inicio: 0";
+//
+//                FileWriter fw  = new FileWriter(archivoDescIndice, true);
+//                BufferedWriter bwr = new BufferedWriter(fw);
+//                bwr.write(info);
+//                bwr.close();
+//
+//                System.out.println("Archivo creado: " + archivoDescIndice.getName());
+//
+//                // Ahora, actualiza el conteo de bloques
+//                updateBloquesCountInDescIndiceUsuario(currentBloquesCount + 1);
+//
+//            } else {
+//                System.out.println("El archivo desc_indice_usuario.txt ya existe.");
+//            }
+//        } catch (IOException e) {
+//            System.out.println("Error al crear desc_indice_usuario.txt.");
+//            e.printStackTrace();
+//        }
+
+
 
  }
+        public static void inicializarDescriptorIndice(int bloqueNumber) throws IOException{
+            try {
+                File archivoDescIndice = new File("C:\\MEIA\\desc_indice_usuario.txt");
+                if (archivoDescIndice.createNewFile()) {
+                    int currentBloquesCount = getBloquesCountFromDescIndiceUsuario();
+
+                    // Agrega el conteo actual de bloques a la cadena info
+                    String info = "nombre_archivo: desc_indice_usuario.txt" + System.getProperty("line.separator")
+                        + "fecha_creacion:" + System.getProperty("line.separator")
+                        + "usuario_creacion:" + System.getProperty("line.separator")
+                        + "fecha_modificacion:" + System.getProperty("line.separator")
+                        + "usuario_modificacion:" + System.getProperty("line.separator")
+                        + "registros_activos: 0" + System.getProperty("line.separator")
+                        + "registros_inactivos: 0" + System.getProperty("line.separator")
+                        + "total_registros: 0" + System.getProperty("line.separator")
+                        + "bloques: " + currentBloquesCount + System.getProperty("line.separator")
+                        + "inicio: 0";
+
+                    FileWriter fw  = new FileWriter(archivoDescIndice, true);
+                    BufferedWriter bwr = new BufferedWriter(fw);
+                    bwr.write(info);
+                    bwr.close();
+
+                    System.out.println("Archivo creado: " + archivoDescIndice.getName());
+
+                    // Ahora, actualiza el conteo de bloques
+                    updateBloquesCountInDescIndiceUsuario(currentBloquesCount + 1);
+
+                } else {
+                    System.out.println("El archivo desc_indice_usuario.txt ya existe.");
+                }
+            } catch (IOException e) {
+                System.out.println("Error al crear desc_indice_usuario.txt.");
+                e.printStackTrace();
+            }
+        }
+
+    
+        public static int getNextBloqueNumber() {
+            int n = 1;
+            while (true) {
+                File tempFile = new File("C:\\MEIA\\usuario_bloque" + n + ".txt");
+                if (!tempFile.exists()) {
+                    return n;
+                }
+                n++;
+            }
+        }
+        
+        public static void agregarRegistro(String registro) throws IOException {
+            int bloqueNumber = getNextBloqueNumber() - 1; // Obtenemos el bloque actual
+            String filePath = "C:\\MEIA\\usuario_bloque" + bloqueNumber + ".txt";
+            File archivoBloque = new File(filePath);
+
+            if (!archivoBloque.exists()) {
+                System.out.println("Error: El archivo no existe.");
+                return;
+            }
+
+            List<String> lines = Files.readAllLines(archivoBloque.toPath(), StandardCharsets.UTF_8);
+            int currentRecords = lines.size() - 1; // Sin contar el header
+
+            if (currentRecords >= 4) { // Suponiendo que max_organizar es 4
+                bloqueNumber = getNextBloqueNumber(); // Crear un nuevo bloque
+                filePath = "C:\\MEIA\\usuario_bloque" + bloqueNumber + ".txt";
+                createBloqueFile(bloqueNumber);
+                createDescBloqueFile(bloqueNumber);
+            }
+
+            FileWriter Escribir = new FileWriter(filePath, true);
+            BufferedWriter bw = new BufferedWriter(Escribir);
+            bw.write(registro);
+            bw.newLine();
+            bw.close();
+            
+            // Actualiza los registros en el descriptor del bloque
+            //updateRecordsInDescBloqueFile(bloqueNumber, 1, 0);
+        }
+        
+        public static void createBloqueFile(int bloqueNumber) throws IOException {
+            String filePath = "C:\\MEIA\\usuario_bloque" + bloqueNumber + ".txt";
+            File archivoBloque = new File(filePath);
+            if (!archivoBloque.exists()) {
+                archivoBloque.createNewFile();
+                String header = "pos|llave|usuario|Nombre|Apellido|Password|fecha_nacimiento|correo_electronico|path_fotografia|Telefono|Rol|Estatus";
+                FileWriter Escribir = new FileWriter(archivoBloque, true);
+                BufferedWriter bw = new BufferedWriter(Escribir);
+                bw.write(header);
+                bw.newLine();
+                bw.close();
+                System.out.println("Archivo creado: " + archivoBloque.getName());
+            } else {
+                System.out.println("El archivo usuario_bloque" + bloqueNumber + ".txt ya existe.");
+            }
+        }
+
+        public static void createDescBloqueFile(int bloqueNumber) throws IOException {
+            String filePath = "C:\\MEIA\\desc_usuarios_bloque" + bloqueNumber + ".txt";
+            File archivoDescBloque = new File(filePath);
+            if (!archivoDescBloque.exists()) {
+                archivoDescBloque.createNewFile();
+                String info = "nombre_archivo: usuario_bloque" + bloqueNumber + ".txt" + System.getProperty("line.separator")
+                    + "fecha_creacion:" + System.getProperty("line.separator")
+                    + "usuario_creacion:" + System.getProperty("line.separator")
+                    + "fecha_modificacion:" + System.getProperty("line.separator")
+                    + "usuario_modificacion:" + System.getProperty("line.separator")
+                    + "registros_activos: 0" + System.getProperty("line.separator")
+                    + "registros_inactivos: 0" + System.getProperty("line.separator")
+                    + "total_registros: 0" + System.getProperty("line.separator")
+                    + "maximo_reorganizar: 4";
+
+                FileWriter Escribir = new FileWriter(archivoDescBloque, true);
+                BufferedWriter bw = new BufferedWriter(Escribir);
+                bw.write(info);
+                bw.close();
+
+                System.out.println("Archivo creado: " + archivoDescBloque.getName());
+            } else {
+                System.out.println("El archivo desc_usuarios_bloque" + bloqueNumber + ".txt ya existe.");
+            }
+        }
+        
+        //obtiene el valor actual de bloques
+        public static int getBloquesCountFromDescIndiceUsuario() throws IOException {
+            File archivoDescIndice = new File("C:\\MEIA\\desc_indice_usuario.txt");
+            List<String> lines = Files.readAllLines(archivoDescIndice.toPath(), StandardCharsets.UTF_8);
+
+            for (String line : lines) {
+                if (line.startsWith("bloques: ")) {
+                    return Integer.parseInt(line.split(": ")[1].trim());
+                }
+            }
+            return 0;
+        }
+        
+        //para actualizar el campo bloques
+        public static void updateBloquesCountInDescIndiceUsuario(int newCount) throws IOException {
+            File archivoDescIndice = new File("C:\\MEIA\\desc_indice_usuario.txt");
+            List<String> lines = Files.readAllLines(archivoDescIndice.toPath(), StandardCharsets.UTF_8);
+
+            for (int i = 0; i < lines.size(); i++) {
+                if (lines.get(i).startsWith("bloques: ")) {
+                    lines.set(i, "bloques: " + newCount);
+                    break;
+                }
+            }
+
+            FileWriter fw = new FileWriter(archivoDescIndice, false); // false para sobrescribir el archivo
+            BufferedWriter bwr = new BufferedWriter(fw);
+            for (String line : lines) {
+                bwr.write(line);
+                bwr.newLine();
+            }
+            bwr.close();
+        }
+        
+        public static void updateRecordsInDescBloqueFile(int bloqueNumber, int activeChange, int inactiveChange) throws IOException {
+            String filePath = "C:\\MEIA\\desc_usuarios_bloque" + bloqueNumber + ".txt";
+            File archivoDescBloque = new File(filePath);
+            List<String> lines = Files.readAllLines(archivoDescBloque.toPath(), StandardCharsets.UTF_8);
+
+            for (int i = 0; i < lines.size(); i++) {
+                if (lines.get(i).startsWith("registros_activos: ")) {
+                    int currentActive = Integer.parseInt(lines.get(i).split(": ")[1].trim());
+                    lines.set(i, "registros_activos: " + (currentActive + activeChange));
+                } else if (lines.get(i).startsWith("registros_inactivos: ")) {
+                    int currentInactive = Integer.parseInt(lines.get(i).split(": ")[1].trim());
+                    lines.set(i, "registros_inactivos: " + (currentInactive + inactiveChange));
+                } else if (lines.get(i).startsWith("total_registros: ")) {
+                    int currentTotal = Integer.parseInt(lines.get(i).split(": ")[1].trim());
+                    lines.set(i, "total_registros: " + (currentTotal + activeChange + inactiveChange));
+                }
+            }
+
+            FileWriter fw = new FileWriter(archivoDescBloque, false); // false para sobrescribir el archivo
+            BufferedWriter bwr = new BufferedWriter(fw);
+            for (String line : lines) {
+                bwr.write(line);
+                bwr.newLine();
+            }
+            bwr.close();
+        }
+        
+
+
+        
+
  }

@@ -12,33 +12,31 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
+import com.mycompany.primera_parte.ArchivoSecuencialIndizado;
 public class MenuAdmin extends javax.swing.JFrame {
     /**
      * Creates new form MenuAdmin
      */
+    private String username;
+    
     public MenuAdmin() {
         initComponents();
         this.setLocationRelativeTo(null);
         Login l2 = new Login();
-        user_lbl.setText(Login.usertx);
-        if (l2.rol == 1) 
-        {
+        user_lbl.setText(Login.usuarioActual);
+        
+        if (l2.rol == 1) {
             rol_lbl.setText("Administrador");
-            //JBTN_deleteProfile1.setEnabled(false);
-        }
-        else
-        {
+        } else {
             rol_lbl.setText("Usuario");
             JBTN_IngresarUser.setEnabled(false);
             JBTN_backup.setEnabled(false);
             JBTN_search.setEnabled(true);
         }
-        foto_lbl.setIcon(new ImageIcon(l2.FotoPath));
-        
-        
-    }
 
+        foto_lbl.setIcon(new ImageIcon(l2.FotoPath));
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -286,7 +284,9 @@ public class MenuAdmin extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
+    
 
+    
     private void JBTN_backupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTN_backupActionPerformed
      String directorioOrigen = "C:/MEIA";
         

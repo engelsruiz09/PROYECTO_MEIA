@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import Funciones.ArchivoSecuencial;
+import com.mycompany.primera_parte.ArchivoSecuencialIndizado;
 import Funciones.AESencripter;
 import java.io.FileReader;
 import java.io.File;
@@ -16,6 +17,10 @@ import java.io.IOException;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.io.File;
+import java.util.List;
 /**
  *
  * @author JULIORUIZ
@@ -39,29 +44,38 @@ public class CrearUsuario extends javax.swing.JFrame {
     {
         initComponents();
         this.setLocationRelativeTo(null);
-        MenuAdmin m1= new MenuAdmin();
+        MenuAdmin m1= new MenuAdmin();  
         Login L1=new Login();
         
-         if (archivo.length() == 0 && archivo2.length() == 0) {
+        File primerBloque = new File("C:\\MEIA\\usuario_bloque1.txt");
+
+        if (primerBloque.exists()) {
+            try {
+                // Leer las líneas del archivo
+                List<String> lines = Files.readAllLines(primerBloque.toPath(), StandardCharsets.UTF_8);
+                // Si solo hay una línea (el encabezado), es el primer registro real
+                if (lines.size() == 1) {
+                    admin_rdb.setSelected(true);
+                    user_rdb.setSelected(false);
+                    admin_rdb.setEnabled(false);
+                    user_rdb.setEnabled(false);
+                } else {
+                    admin_rdb.setSelected(false);
+                    user_rdb.setSelected(true);
+                    admin_rdb.setEnabled(false);
+                    user_rdb.setEnabled(false);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Aquí puedes manejar la excepción, por ejemplo, mostrando un mensaje de error al usuario
+                JOptionPane.showMessageDialog(this, "Error al leer el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            // Si el archivo no existe, es el primer registro
             admin_rdb.setSelected(true);
             user_rdb.setSelected(false);
             admin_rdb.setEnabled(false);
             user_rdb.setEnabled(false);
-        }
-        else if(m1.ValAdm==1)
-        {
-            admin_rdb.setSelected(false);
-            user_rdb.setSelected(true);
-            admin_rdb.setEnabled(true);
-            user_rdb.setEnabled(true);
-        }
-        else if(L1.ValAdm2==2)
-        {
-            admin_rdb.setSelected(false);
-            user_rdb.setSelected(true);
-            admin_rdb.setEnabled(false);
-            user_rdb.setEnabled(false);
-            L1.ValAdm2 = 0;
         }
     }
 
@@ -633,17 +647,22 @@ public class CrearUsuario extends javax.swing.JFrame {
             }
 
             // Comienza la escritura de datos en bitacora
-            String bitacoraUsersPath = "C:\\MEIA\\bitacora_usuario.txt"; 
-            String userPath = "C:\\MEIA\\usuario.txt";
-            String bitacoraDesc = "C:\\MEIA\\desc_bitacora_usuario.txt";
-            String userDec = "C:\\MEIA\\desc_usuario.txt";
-
+            //String bitacoraUsersPath = "C:\\MEIA\\bitacora_usuario.txt"; 
+            //String userPath = "C:\\MEIA\\usuario.txt";
+            //String bitacoraDesc = "C:\\MEIA\\desc_bitacora_usuario.txt";
+            //String userDec = "C:\\MEIA\\desc_usuario.txt";
+            
+            // Instancia de la nueva clase ArchivoSecuencialIndizado
+            ArchivoSecuencialIndizado asi = new ArchivoSecuencialIndizado();
+             
             AESencripter encriptador = new AESencripter();
             String contraseñaCifrada = encriptador.encriptar(password, usuario);
+            // Crear la cadena de información del usuario
             String Informacion = String.join("|", usuario, nombre, apellido, contraseñaCifrada, fecha, correo, path_fotografia, Integer.toString(telefono), Integer.toString(rol), "1");
 
-            ArchivoSecuencial as = new ArchivoSecuencial();            
-            as.Add(usuario, Informacion, bitacoraUsersPath, userPath, bitacoraDesc, userDec, usuario, false);            
+
+            // Agregar el registro al sistema indizado
+            asi.add(Informacion);
 
             // Redirige al usuario a la pagina de inicio de sesión después de completar el registro
             JOptionPane.showMessageDialog(this, "Usuario creado correctamente", "Crear Usuario", JOptionPane.INFORMATION_MESSAGE);
