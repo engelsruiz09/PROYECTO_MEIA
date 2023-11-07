@@ -193,7 +193,7 @@
                                       <Component id="admin_rdb" min="-2" pref="164" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="BTN_MODIFICAR1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="BTN_REORGANIZAR" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="BTN_MODIFICAR" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -290,7 +290,7 @@
                               <Component id="BTN_MODIFICAR" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
                               <Component id="BTN_BAJA" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
                               <Component id="jbvolver" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
-                              <Component id="BTN_MODIFICAR1" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
+                              <Component id="BTN_REORGANIZAR" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
@@ -595,7 +595,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JCBMOSTRARActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="BTN_MODIFICAR1">
+        <Component class="javax.swing.JButton" name="BTN_REORGANIZAR">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="66" type="rgb"/>
@@ -609,7 +609,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_MODIFICAR1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_REORGANIZARActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

@@ -57,13 +57,13 @@ public class CrearUsuario extends javax.swing.JFrame {
                 if (lines.size() == 1) {
                     admin_rdb.setSelected(true);
                     user_rdb.setSelected(false);
-                    admin_rdb.setEnabled(false);
-                    user_rdb.setEnabled(false);
+                    //admin_rdb.setEnabled(false);
+                    //user_rdb.setEnabled(false);
                 } else {
                     admin_rdb.setSelected(false);
                     user_rdb.setSelected(true);
-                    admin_rdb.setEnabled(false);
-                    user_rdb.setEnabled(false);
+                    //admin_rdb.setEnabled(false);
+                    //user_rdb.setEnabled(false);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -74,6 +74,15 @@ public class CrearUsuario extends javax.swing.JFrame {
             // Si el archivo no existe, es el primer registro
             admin_rdb.setSelected(true);
             user_rdb.setSelected(false);
+            //admin_rdb.setEnabled(false);
+            //user_rdb.setEnabled(false);
+        }
+        
+         // Si el usuario actual es admin, permite seleccionar el tipo de usuario a crear
+        if (L1.rol == 1) {
+            admin_rdb.setEnabled(true);
+            user_rdb.setEnabled(true);
+        } else {
             admin_rdb.setEnabled(false);
             user_rdb.setEnabled(false);
         }

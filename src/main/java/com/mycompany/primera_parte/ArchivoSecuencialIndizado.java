@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 
 
@@ -156,6 +158,7 @@ private void agregarRegistroIndice(String registro) throws IOException {
     String indexPath = "C:\\MEIA\\indice_usuario.txt";
     File indiceFile = new File(indexPath);
 
+    // Verificar si el archivo de índice existe y crearlo si no
     if (!indiceFile.exists()) {
         indiceFile.createNewFile();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(indiceFile))) {
@@ -164,40 +167,58 @@ private void agregarRegistroIndice(String registro) throws IOException {
         }
     }
 
+    // Leer todas las líneas del archivo de índice
     List<String> lines = Files.readAllLines(Paths.get(indexPath), StandardCharsets.UTF_8);
-    lines.remove(0);  // Eliminar el encabezado
+    int newRegistro = lines.size(); // Incluye el encabezado en el conteo
 
-    int newRegistro = lines.size() + 1;
-    lines.add("1|" + newRegistro + "|" + posicionActual + "|" + usuarioActual + "|0|1");
+    // Agregar el nuevo registro al final del archivo
+    lines.add(newRegistro + "|" + newRegistro + "|" + posicionActual + "|" + usuarioActual + "|0|1");
 
-    lines.sort((line1, line2) -> {
-        String[] userParts1 = line1.split("\\|");
-        String[] userParts2 = line2.split("\\|");
-        return userParts1[3].compareTo(userParts2[3]);
-    });
+    // Organizar los registros existentes y el nuevo registro por usuario para actualizar "siguiente"
+    List<String[]> records = new ArrayList<>();
+    for (int i = 1; i < lines.size(); i++) {
+        records.add(lines.get(i).split("\\|"));
+    }
+    records.sort((a, b) -> a[3].compareTo(b[3]));
 
-    int inicioActual = 1;
-    for (int i = 0; i < lines.size() - 1; i++) {
-        String[] currentParts = lines.get(i).split("\\|");
-        String[] nextParts = lines.get(i + 1).split("\\|");
+    // Actualizar el campo "siguiente" para cada registro y encontrar el "inicio"
+    for (int i = 0; i < records.size() - 1; i++) {
+        records.get(i)[4] = records.get(i + 1)[1]; // El "siguiente" es el índice del registro siguiente
+    }
+    records.get(records.size() - 1)[4] = "0"; // El último registro apunta a 0 en "siguiente"
 
-        if (currentParts[3].compareTo(nextParts[3]) > 0) {
-            inicioActual++;
-        }
-        currentParts[0] = String.valueOf(inicioActual); // Actualizar el valor de inicio
+    // El registro con el usuario menor alfabéticamente es el nuevo inicio
+    int inicio = Integer.parseInt(records.get(0)[1]);
 
-        currentParts[4] = nextParts[1];  // El campo "siguiente" toma el valor del campo "registro" del siguiente registro
-        lines.set(i, String.join("|", currentParts));
+    // Actualizar la columna "inicio" en cada línea con el nuevo valor de inicio
+    for (String[] record : records) {
+        record[0] = String.valueOf(inicio);
     }
 
-    // El último registro siempre apunta a 0 en "siguiente"
-    String[] lastParts = lines.get(lines.size() - 1).split("\\|");
-    lastParts[4] = "0";
-    lines.set(lines.size() - 1, String.join("|", lastParts));
+    // Reconstruir las líneas con los registros actualizados
+    List<String> updatedLines = new ArrayList<>();
+    updatedLines.add(lines.get(0)); // Agregar el encabezado sin cambios
+    for (String[] record : records) {
+        updatedLines.add(String.join("|", record));
+    }
 
-    lines.add(0, "inicio|registro|posicion|usuario|siguiente|estatus");
-    Files.write(Paths.get(indexPath), lines, StandardCharsets.UTF_8);
+    // Escribir todas las líneas de nuevo en el archivo
+    Files.write(Paths.get(indexPath), updatedLines, StandardCharsets.UTF_8);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private boolean canAddToCurrentBloque(int bloqueNumber) throws IOException {
@@ -224,7 +245,7 @@ private void agregarRegistroIndice(String registro) throws IOException {
 
 
 
-    private int getCurrentBloqueNumber() {
+    public int getCurrentBloqueNumber() {
         return PRIMERA_PARTE.getNextBloqueNumber() - 1;
     }
 
@@ -279,7 +300,7 @@ private void agregarRegistroIndice(String registro) throws IOException {
     }
     
     
-    private void updateDescUsuariosBloque(int bloqueNumber, String registro) throws IOException {
+    public void updateDescUsuariosBloque(int bloqueNumber, String registro) throws IOException {
         // Rutas de los archivos
         String filePath = "C:\\MEIA\\usuario_bloque" + bloqueNumber + ".txt";
         String descFilePath = "C:\\MEIA\\desc_usuarios_bloque" + bloqueNumber + ".txt";
@@ -577,6 +598,38 @@ public int obtenerUltimoBloque() {
     return numeroUltimoBloque;
 }
 
+public void updateInactiveCountInDescUsuariosBloque(int bloqueNumber) throws IOException {
+    String filePath = "C:\\MEIA\\usuario_bloque" + bloqueNumber + ".txt";
+    String descFilePath = "C:\\MEIA\\desc_usuarios_bloque" + bloqueNumber + ".txt";
+
+    Map<String, String> descriptorMap = readDescriptorToMap(descFilePath);
+
+    int inactivos = 0;
+    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split("\\|");
+            try {
+                if (parts[parts.length - 1].matches("\\d+")) { // Verifica si es un número
+                    int estatus = Integer.parseInt(parts[parts.length - 1]);
+                    if (estatus == 0) {
+                        inactivos++;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("ArchivoMALO");
+            }
+        }
+    }
+
+    descriptorMap.put("registros_inactivos", String.valueOf(inactivos));
+
+    // Escribir el mapa de vuelta al archivo descriptor
+    List<String> newDescriptorLines = descriptorMap.entrySet().stream()
+        .map(entry -> entry.getKey() + ": " + entry.getValue())
+        .collect(Collectors.toList());
+    Files.write(Paths.get(descFilePath), newDescriptorLines, StandardCharsets.UTF_8);
+}
 
 
 
