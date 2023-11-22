@@ -657,7 +657,7 @@ public class ManejoArchivo {
                 writer.write("usuario creacion:"+user+"\n");
             }
             else{
-                writer.write("fecha creacion:"+fechaCreacion+"\n");
+                writer.write("fecha creacion:"+dateFormat.format(date)+"\n");
                 writer.write("usuario creacion:"+userCreacion+"\n");
             }
             writer.write("fecha modificacion:"+dateFormat.format(date)+"\n");

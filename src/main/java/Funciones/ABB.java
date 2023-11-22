@@ -50,7 +50,7 @@ public void Cargar() throws FileNotFoundException, IOException
                     {
                         var datos = Linea.split(Pattern.quote("|"));
                         String llave = datos[3] + datos[4] + datos[5];
-                        var Linea_datos = datos[3] +"|" + datos[4] + "|" + datos[5] + "|" + datos[6];
+                        var Linea_datos = datos[3] +"|" + datos[4] + "|" + datos[5] + "|" + datos[6] + "|" + datos[7];
                          Insertar(llave,Linea_datos);       
                     }
                     Linea = br.readLine();
@@ -184,7 +184,7 @@ public void WriteTree(String pathFileTree) throws IOException{
          else
          {
          var Modificar = Actual[0] + "|" + Actual[1]+ "|" + Actual[2] + "|"+Array_Archivo_txt[3]+ "|"+Array_Archivo_txt[4]+ "|"+Array_Archivo_txt[5]
-              + "|" + Array_Archivo_txt[6];
+              + "|" + Array_Archivo_txt[6] + "|" + Array_Archivo_txt[7];
       manejoArchivos.Modificar(new File(pathFileTree),Archivo_txt, Modificar , strError);
          }
     }

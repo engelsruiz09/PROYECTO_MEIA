@@ -269,6 +269,11 @@ public class Buscar extends javax.swing.JFrame {
         });
 
         jtbuscar.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jtbuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtbuscarActionPerformed(evt);
+            }
+        });
 
         BTN_MODIFICAR.setBackground(new java.awt.Color(102, 255, 255));
         BTN_MODIFICAR.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
@@ -1103,19 +1108,23 @@ private String validarcontrasena(String contrasena) {
                 Date date = new Date();
                 //Insertar en arbol de solicitudes
                
-                var todosLosRegistros = user + "|" + searchTerm + "|" + dateFormat.format(date) + "|" + "1";
+                var todosLosRegistros = user + "|" + searchTerm + "|" + dateFormat.format(date) + "|" + "0" + "|" + "1";
                 String LLave  = user + searchTerm + dateFormat.format(date);
             
                 ABB.Insertar(LLave, todosLosRegistros);   
                  try {
                 ABB.WriteTree("C:/MEIA/tree.txt");
-                 
+                manejoarchivo.ModifyFilesDescUser("tree",9, user, true, strError);
                  clear();
             } catch (IOException ex) {
                 //Logger.getLogger(EnvioCorreo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }                         
     }//GEN-LAST:event_BTN_AMIGOSActionPerformed
+
+    private void jtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtbuscarActionPerformed
 private void clear(){
         JOptionPane.showMessageDialog(null, "Solicitud Enviada Correctamente", "Mensaje", 1);
 }
