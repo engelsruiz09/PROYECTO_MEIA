@@ -8,6 +8,9 @@ package Forms;
  *
  * @author JULIORUIZ
  */
+import Funciones.Data;
+import Funciones.ManejoArchivo;
+import Funciones.ABB;
 import java.util.*;
 import java.io.*;
 import java.util.List;
@@ -39,15 +42,25 @@ import java.util.Comparator;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
+import javax.swing.DefaultListModel;
 
 public class Buscar extends javax.swing.JFrame {
-
+    ABB ABB = new ABB();
+    int Contadoramigo = 0;
     File file;
     byte[] image;
     FileInputStream input;
-
+    
     public Buscar() {
         initComponents();
+        try{
+                ABB.Cargar();
+                }catch(IOException ex) 
+                {
+                }
         this.setLocationRelativeTo(null);//para colocarlo en medio de la pantalla
 
         Login s13 = new Login();
@@ -100,6 +113,7 @@ public class Buscar extends javax.swing.JFrame {
         jbfoto = new javax.swing.JButton();
         JCBMOSTRAR = new javax.swing.JCheckBox();
         BTN_REORGANIZAR = new javax.swing.JButton();
+        BTN_AMIGOS = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -304,6 +318,16 @@ public class Buscar extends javax.swing.JFrame {
             }
         });
 
+        BTN_AMIGOS.setBackground(new java.awt.Color(102, 255, 255));
+        BTN_AMIGOS.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        BTN_AMIGOS.setText("Añadir amigo");
+        BTN_AMIGOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BTN_AMIGOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_AMIGOSActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -312,7 +336,7 @@ public class Buscar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel2)
@@ -336,8 +360,7 @@ public class Buscar extends javax.swing.JFrame {
                                                 .addComponent(jbfoto, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addComponent(jtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(73, 73, 73))
+                                        .addComponent(jtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -345,14 +368,9 @@ public class Buscar extends javax.swing.JFrame {
                                     .addComponent(user_rdb, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(admin_rdb, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(BTN_REORGANIZAR)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(BTN_MODIFICAR)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(BTN_BAJA)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jbvolver)
-                                .addGap(5, 5, 5))))
+                                .addComponent(BTN_AMIGOS)
+                                .addGap(20, 20, 20)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(370, 370, 370)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -361,16 +379,28 @@ public class Buscar extends javax.swing.JFrame {
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jbbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(date_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(11, 11, 11))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(fotoPath_txt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-                                    .addComponent(phone_txt, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(mail_txt, javax.swing.GroupLayout.Alignment.LEADING))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(date_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jbbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(fotoPath_txt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                                        .addComponent(phone_txt, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(mail_txt, javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(513, 513, 513)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(BTN_REORGANIZAR)
+                            .addComponent(BTN_MODIFICAR, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbvolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTN_BAJA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -407,23 +437,31 @@ public class Buscar extends javax.swing.JFrame {
                         .addComponent(fotoPath_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jbfoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(JCBMOSTRAR)
-                        .addGap(12, 12, 12)
-                        .addComponent(admin_rdb)
-                        .addGap(13, 13, 13)
-                        .addComponent(user_rdb)
-                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(BTN_MODIFICAR, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BTN_BAJA, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbvolver, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BTN_REORGANIZAR, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(23, 23, 23))))
+                        .addComponent(jLabel6)
+                        .addGap(35, 35, 35))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(BTN_BAJA, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(BTN_REORGANIZAR, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jbvolver, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(BTN_MODIFICAR, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(JCBMOSTRAR)
+                                .addGap(12, 12, 12)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(admin_rdb)
+                                        .addGap(13, 13, 13)
+                                        .addComponent(user_rdb))
+                                    .addComponent(BTN_AMIGOS, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap())))
         );
 
         fileMenu.setMnemonic('f');
@@ -1050,6 +1088,37 @@ private String validarcontrasena(String contrasena) {
             JOptionPane.showMessageDialog(this, "Reorganización completada con éxito.", "Reorganizar", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_BTN_REORGANIZARActionPerformed
 
+    private void BTN_AMIGOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AMIGOSActionPerformed
+        Contadoramigo++;
+        String user = Login.usuarioActual;
+        String searchTerm = jtbuscar.getText();
+        var manejoarchivo = new ManejoArchivo();
+        var strError = "";
+        
+        if (searchTerm.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un usuario a buscar", "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        } else {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                Date date = new Date();
+                //Insertar en arbol de solicitudes
+               
+                var todosLosRegistros = user + "|" + searchTerm + "|" + dateFormat.format(date) + "|" + "1";
+                String LLave  = user + searchTerm + dateFormat.format(date);
+            
+                ABB.Insertar(LLave, todosLosRegistros);   
+                 try {
+                ABB.WriteTree("C:/MEIA/tree.txt");
+                 
+                 clear();
+            } catch (IOException ex) {
+                //Logger.getLogger(EnvioCorreo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }                         
+    }//GEN-LAST:event_BTN_AMIGOSActionPerformed
+private void clear(){
+        JOptionPane.showMessageDialog(null, "Solicitud Enviada Correctamente", "Mensaje", 1);
+}
 private void eliminarRegistros() {
         try {
             String rutaArchivo = "C:/MEIA/indice_usuario.txt";
@@ -1403,6 +1472,7 @@ public void actualizarPosicionesEnBloques() throws IOException {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BTN_AMIGOS;
     private javax.swing.JButton BTN_BAJA;
     private javax.swing.JButton BTN_MODIFICAR;
     private javax.swing.JButton BTN_REORGANIZAR;
