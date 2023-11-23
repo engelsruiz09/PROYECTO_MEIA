@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/Application.java to edit this template
             * donde está el proyecto https://github.com/engelsruiz09/PROYECTO_MEIA.git
  */
+
 package Forms;
 import java.io.*;
 import javax.swing.JOptionPane;
@@ -16,12 +17,17 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import com.mycompany.primera_parte.ArchivoSecuencialIndizado;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import javax.swing.*;
 /**
  *
  * @author JULIORUIZ
  */
 public class Login extends javax.swing.JFrame {
     public static String usuarioActual = "";
+    private static final String FILE_PATH = "C:/MEIA/lista_amigos.txt";
     /**
      * Creates new form Login
      */
@@ -346,6 +352,7 @@ public class Login extends javax.swing.JFrame {
         // Verifica si los campos de usuario y contraseña están vacíos.
         String usernameInput = JTFUSUR.getText().trim();
         Login.usuarioActual = JTFUSUR.getText().trim();
+        
         if (usernameInput.isBlank() || JPFCONTRA.getText().isBlank()) {
             JOptionPane.showMessageDialog(null, "Se deben llenar todos los campos", "Ingreso no valido", WIDTH);
             return;
@@ -388,6 +395,7 @@ public class Login extends javax.swing.JFrame {
                 usertx = usuario;
                 MenuAdmin m1 = new MenuAdmin();
                 m1.setVisible(true);
+                revisarSolicitudesAmistad(usuarioActual);
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Login", JOptionPane.INFORMATION_MESSAGE);
@@ -443,6 +451,46 @@ public class Login extends javax.swing.JFrame {
                 new Login().setVisible(true);
             }
         });
+    }
+    
+     private static void revisarSolicitudesAmistad(String usuario) {
+        Path path = Paths.get(FILE_PATH);
+        try {
+            List<String> lineas = Files.readAllLines(path);
+            List<String> lineasModificadas = new ArrayList<>();
+
+            for (String linea : lineas) {
+                String[] partes = linea.split("\\|");
+                // Verifica si la línea corresponde a una solicitud pendiente para el usuario.
+                if (partes[4].equals(usuario) && partes[6].equals("0") && partes[7].equals("1")) {
+                    int respuesta = JOptionPane.showConfirmDialog(null,
+                            "Tienes una solicitud de amistad de: " + partes[3] +
+                            "\n¿Quieres aceptar la solicitud?",
+                            "Solicitud de Amistad",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                        // Aceptar la solicitud de amistad.
+                        partes[6] = "1";
+                    } else {
+                        // Rechazar la solicitud de amistad.
+                        partes[7] = "0";
+                    }
+
+                    // Reconstruir la línea con los cambios realizados.
+                    linea = String.join("|", partes);
+                }
+                // Agregar la línea, modificada o no, a la lista de líneas modificadas.
+                lineasModificadas.add(linea);
+            }
+
+            // Escribir las líneas modificadas de vuelta al archivo.
+            Files.write(path, lineasModificadas);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
